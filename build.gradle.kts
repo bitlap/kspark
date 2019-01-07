@@ -1,15 +1,18 @@
+import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 allprojects {
     group = "io.patamon.kspark"
     version = "1.0-SNAPSHOT"
 
+    apply {
+        plugin<JavaPlugin>()
+        plugin<KotlinPluginWrapper>()
+    }
+
     dependencies {
-        compile(kotlin("stdlib-jdk8"))
-        compile("org.apache.spark", "spark-core_2.12", "2.4.0")
-        compile("org.apache.spark", "spark-sql_2.12", "2.4.0")
-        compile("org.apache.spark", "spark-hive_2.12", "2.4.0")
-        testCompile("junit", "junit", "4.12")
+        implementation(kotlin("stdlib-jdk8"))
+        testImplementation("junit", "junit", "4.12")
     }
 
     repositories {
@@ -18,12 +21,13 @@ allprojects {
         mavenCentral()
     }
 
-    configure<JavaPluginConvention> {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-    }
-
     tasks.withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
+    }
+
+    configure<JavaPluginConvention> {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
