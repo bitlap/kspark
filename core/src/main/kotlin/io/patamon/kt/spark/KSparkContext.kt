@@ -11,17 +11,17 @@ import org.apache.spark.sql.SparkSession
  */
 class KSparkContext {
 
-    fun getOrCreate(): KSpark {
-        val spark = SparkSession.builder()
-            .appName("TEST-JOB")
-            .master("local[*]")
-            .config("spark.sql.warehouse.dir", "hdfs://127.0.0.1:9000/user/hive/warehouse/")
-            .config("hive.metastore.uris", "thrift://localhost:9083")
-            .config("spark.ui.port", "4088")
-            .enableHiveSupport()
-            .orCreate
-        spark.sparkContext().hadoopConfiguration().set("fs.defaultFS", "hdfs://127.0.0.1:9000")
-        return KSpark(spark)
-    }
+    private val sparkB: SparkSession.Builder = SparkSession.builder()
+    var appName = "KSpark Job"
+    var master = "" // local[*]
+    var hiveSupport = false
+    var config = mutableMapOf<String, String>()
 
+    fun getOrCreate(): KSpark {
+        if (appName.isNotBlank()) sparkB.appName(appName)
+        if (master.isNotBlank()) sparkB.master(master)
+        if (config.isNotEmpty()) config.forEach { k, v -> sparkB.config(k, v) }
+        if (hiveSupport) sparkB.enableHiveSupport()
+        return KSpark(sparkB.orCreate)
+    }
 }

@@ -10,7 +10,14 @@ import io.patamon.kt.spark.spark
  */
 fun main(args: Array<String>) {
     val spark = spark {
-
+        appName = "TEST-JOB"
+        master  = "local[*]"
+        hiveSupport = true
+        config = mutableMapOf(
+            "spark.sql.warehouse.dir" to "hdfs://127.0.0.1:9000/user/hive/warehouse/",
+            "hive.metastore.uris" to "thrift://localhost:9083",
+            "spark.ui.port" to "4088"
+        )
     }
     val ps = mutableListOf(
         Person(1L, "mimosa", 22)
