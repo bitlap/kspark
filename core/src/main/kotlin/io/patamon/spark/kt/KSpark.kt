@@ -1,4 +1,4 @@
-package io.patamon.kt.spark
+package io.patamon.spark.kt
 
 import org.apache.spark.sql.SparkSession
 import kotlin.reflect.KClass

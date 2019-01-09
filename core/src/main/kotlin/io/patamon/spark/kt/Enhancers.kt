@@ -1,4 +1,4 @@
-package io.patamon.kt.spark
+package io.patamon.spark.kt
 
 /**
  * Desc:
