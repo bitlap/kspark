@@ -34,6 +34,8 @@ open class KSpark(val spark: SparkSession) : Serializable {
     val sqlContext = spark.sqlContext()
     val conf by lazy { spark.conf() }
     val catalog by lazy { spark.catalog() }
+    val sharedState by lazy { spark.sharedState() }
+    val sessionState by lazy { spark.sessionState() }
 
     // Inside Functions
     fun version() = spark.version()
@@ -47,13 +49,21 @@ open class KSpark(val spark: SparkSession) : Serializable {
     fun close() = spark.close()
 
     // Inside Functions Create DataFrame
+    inline fun <reified T: Any> createDataFrame(data: List<T>): DataFrame = spark.createDataFrame(data, T::class.java)
+    inline fun <reified T: Any> createDataFrame(vararg data: T): DataFrame = createDataFrame(mutableListOf(*data))
     fun createDataFrame(data: List<*>, beanClass: KClass<*>): DataFrame = spark.createDataFrame(data, beanClass.java)
     fun createDataFrame(data: List<Row>, structType: StructType): DataFrame = spark.createDataFrame(data, structType)
+
+    inline fun <reified T: Any> createDataFrame(data: RDD<T>): DataFrame = spark.createDataFrame(data, T::class.java)
     fun createDataFrame(data: RDD<*>, beanClass: KClass<*>): DataFrame = spark.createDataFrame(data, beanClass.java)
+
+    inline fun <reified T: Any> createDataFrame(data: JavaRDD<T>): DataFrame = spark.createDataFrame(data, T::class.java)
     fun createDataFrame(data: JavaRDD<*>, beanClass: KClass<*>): DataFrame = spark.createDataFrame(data, beanClass.java)
+
     fun createDataFrame(data: RDD<Row>, structType: StructType): DataFrame = spark.createDataFrame(data, structType)
     fun createDataFrame(data: JavaRDD<Row>, structType: StructType): DataFrame = spark.createDataFrame(data, structType)
     fun createDataFrame(data: RDD<Row>, structType: StructType, needsConversion: Boolean): DataFrame = spark.createDataFrame(data, structType, needsConversion)
+
     fun emptyDataFrame(): DataFrame = spark.emptyDataFrame()
     fun sql(sql: String): DataFrame = spark.sql(sql)
 
