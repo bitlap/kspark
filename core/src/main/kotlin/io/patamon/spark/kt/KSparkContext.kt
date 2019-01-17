@@ -35,7 +35,7 @@ class KSparkContext {
     }
 
     /**
-     * Other Configurations
+     * Other Configurations, will overwrite inside settings
      */
     var config = mutableMapOf<String, String>()
     private fun configSetUp() {

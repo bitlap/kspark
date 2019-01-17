@@ -19,6 +19,9 @@ fun main(args: Array<String>) {
             "spark.ui.port" to "4088"
         )
     }
+
+    spark.register("f", ::hello)
+
     spark.createDataFrame(
         Person(1L, "mimosa", 22),
         Person(2L, "mimosa", 23)
@@ -26,9 +29,13 @@ fun main(args: Array<String>) {
 
     spark.sql(
         """
-        select * from test
+        select *, f('udf') from test
         """.trimIndent()
     ).show()
+}
+
+fun hello(s: String): String {
+    return "hello $s"
 }
 
 data class Person(val id: Long, val name: String, val age: Int) : Serializable

@@ -8,6 +8,7 @@ import org.apache.spark.api.java.JavaSparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.types.StructType
 import java.io.Serializable
 import kotlin.reflect.KClass
@@ -25,6 +26,7 @@ fun spark(context: KSparkContext.() -> Unit): KSpark =
 
 
 open class KSpark(val spark: SparkSession) : Serializable {
+    val udfRegistry = UDFRegistry(spark)
 
     // Inside Fields
     val sc = spark.sparkContext()
@@ -42,7 +44,7 @@ open class KSpark(val spark: SparkSession) : Serializable {
     fun read() = spark.read()
     fun readStream() = spark.readStream()
     fun table(tableName: String): DataFrame = spark.table(tableName)
-    fun udf() = spark.udf() // TODO
+    fun udf() = spark.udf() // do not use, see UDFRegistry
     fun cloneSession() = KSpark(spark.cloneSession())
     fun newSession() = KSpark(spark.newSession())
     fun stop() = spark.stop()
@@ -108,5 +110,42 @@ open class KSpark(val spark: SparkSession) : Serializable {
     fun textFile(path: String, minPartitions: Int = jsc.defaultMinPartitions()) = jsc.textFile(path, minPartitions)
     fun wholeTextFiles(path: String, minPartitions: Int = jsc.defaultMinPartitions()) = jsc.wholeTextFiles(path, minPartitions)
 
+    // UDF Register
+    fun register(name: String, udf: UserDefinedFunction) {
+        this.udfRegistry.register(name, udf)
+    }
+    inline fun <reified RT> register(name: String, noinline udf: () -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1> register(name: String, noinline udf: (T1) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2> register(name: String, noinline udf: (T1, T2) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3> register(name: String, noinline udf: (T1, T2, T3) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4> register(name: String, noinline udf: (T1, T2, T3, T4) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5> register(name: String, noinline udf: (T1, T2, T3, T4, T5) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
 }
 
