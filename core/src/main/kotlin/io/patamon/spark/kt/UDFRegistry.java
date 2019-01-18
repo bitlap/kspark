@@ -1,17 +1,7 @@
 package io.patamon.spark.kt;
 
 import org.apache.spark.sql.SparkSession;
-import org.apache.spark.sql.api.java.UDF0;
-import org.apache.spark.sql.api.java.UDF1;
-import org.apache.spark.sql.api.java.UDF2;
-import org.apache.spark.sql.api.java.UDF3;
-import org.apache.spark.sql.api.java.UDF4;
-import org.apache.spark.sql.api.java.UDF5;
-import org.apache.spark.sql.api.java.UDF6;
-import org.apache.spark.sql.api.java.UDF7;
-import org.apache.spark.sql.api.java.UDF8;
-import org.apache.spark.sql.api.java.UDF9;
-import org.apache.spark.sql.api.java.UDF10;
+import org.apache.spark.sql.api.java.*;
 import org.apache.spark.sql.catalyst.JavaTypeInference;
 import org.apache.spark.sql.expressions.UserDefinedAggregateFunction;
 import org.apache.spark.sql.expressions.UserDefinedFunction;
@@ -31,6 +21,9 @@ public class UDFRegistry implements Serializable {
         this.spark = spark;
     }
 
+    /**
+     * udf register
+     */
     public void register(String name, UserDefinedFunction udf) {
         this.spark.udf().register(name, udf);
     }
@@ -90,10 +83,63 @@ public class UDFRegistry implements Serializable {
         this.spark.udf().register(name, udf);
     }
 
+    public <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> void register(String name, UDF11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R> f11, Class<R> returnType) {
+        UserDefinedFunction udf = functions.udf(f11, toDataType(returnType));
+        this.spark.udf().register(name, udf);
+    }
+
+    public <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> void register(String name, UDF12<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, R> f12, Class<R> returnType) {
+        UserDefinedFunction udf = functions.udf(f12, toDataType(returnType));
+        this.spark.udf().register(name, udf);
+    }
+
+    public <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> void register(String name, UDF13<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, R> f13, Class<R> returnType) {
+        UserDefinedFunction udf = functions.udf(f13, toDataType(returnType));
+        this.spark.udf().register(name, udf);
+    }
+
+    public <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> void register(String name, UDF14<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, R> f14, Class<R> returnType) {
+        UserDefinedFunction udf = functions.udf(f14, toDataType(returnType));
+        this.spark.udf().register(name, udf);
+    }
+
+    public <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> void register(String name, UDF15<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, R> f15, Class<R> returnType) {
+        UserDefinedFunction udf = functions.udf(f15, toDataType(returnType));
+        this.spark.udf().register(name, udf);
+    }
+
+    public <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> void register(String name, UDF16<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, R> f16, Class<R> returnType) {
+        UserDefinedFunction udf = functions.udf(f16, toDataType(returnType));
+        this.spark.udf().register(name, udf);
+    }
+
+    public <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> void register(String name, UDF17<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, R> f17, Class<R> returnType) {
+        UserDefinedFunction udf = functions.udf(f17, toDataType(returnType));
+        this.spark.udf().register(name, udf);
+    }
+
+    public <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> void register(String name, UDF18<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, R> f18, Class<R> returnType) {
+        UserDefinedFunction udf = functions.udf(f18, toDataType(returnType));
+        this.spark.udf().register(name, udf);
+    }
+
+    public <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> void register(String name, UDF19<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, R> f19, Class<R> returnType) {
+        UserDefinedFunction udf = functions.udf(f19, toDataType(returnType));
+        this.spark.udf().register(name, udf);
+    }
+
+    public <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> void register(String name, UDF20<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, R> f20, Class<R> returnType) {
+        UserDefinedFunction udf = functions.udf(f20, toDataType(returnType));
+        this.spark.udf().register(name, udf);
+    }
+
     private DataType toDataType(Class<?> type) {
         return JavaTypeInference.inferDataType(type)._1;
     }
 
+    /**
+     * udaf register
+     */
     public void register(String name, UserDefinedAggregateFunction udaf) {
         this.spark.udf().register(name, udaf);
     }

@@ -15,11 +15,7 @@ import kotlin.reflect.KClass
 import org.apache.hadoop.mapreduce.InputFormat as NewInputFormat
 
 /**
- * Desc:
- *
- * Mail: chk19940609@gmail.com
- * Created by IceMimosa
- * Date: 2019-01-07
+ * Desc: spark wrapper
  */
 fun spark(context: KSparkContext.() -> Unit): KSpark =
     KSparkContext().apply(context).getOrCreate()
@@ -52,7 +48,7 @@ open class KSpark(val spark: SparkSession) : Serializable {
 
     // Inside Functions Create DataFrame
     inline fun <reified T: Any> createDataFrame(data: List<T>): DataFrame = spark.createDataFrame(data, T::class.java)
-    inline fun <reified T: Any> createDataFrame(vararg data: T): DataFrame = createDataFrame(mutableListOf(*data))
+    inline fun <reified T: Any> createDataFrame(vararg data: T): DataFrame = this.createDataFrame(mutableListOf(*data))
     fun createDataFrame(data: List<*>, beanClass: KClass<*>): DataFrame = spark.createDataFrame(data, beanClass.java)
     fun createDataFrame(data: List<Row>, structType: StructType): DataFrame = spark.createDataFrame(data, structType)
 
@@ -145,6 +141,36 @@ open class KSpark(val spark: SparkSession) : Serializable {
         this.udfRegistry.register(name, udf, RT::class.java)
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19) -> RT) {
+        this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20) -> RT) {
         this.udfRegistry.register(name, udf, RT::class.java)
     }
 }

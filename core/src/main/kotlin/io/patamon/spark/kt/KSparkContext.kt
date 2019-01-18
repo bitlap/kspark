@@ -16,7 +16,7 @@ class KSparkContext {
      * Application Configurations
      */
     var appName = "KSpark Job"
-    var master = "" // local[*]
+    var master = "" // local[*,2]
     var hiveSupport = false
     private fun appSetUp() {
         if (appName.isNotBlank()) sparkB.appName(appName)
