@@ -8,6 +8,7 @@ import org.apache.spark.api.java.JavaSparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.expressions.UserDefinedAggregateFunction
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.types.StructType
 import java.io.Serializable
@@ -172,6 +173,10 @@ open class KSpark(val spark: SparkSession) : Serializable {
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20) -> RT) {
         this.udfRegistry.register(name, udf, RT::class.java)
+    }
+    // UDAF Register
+    fun register(name: String, udaf: UserDefinedAggregateFunction) {
+        this.udfRegistry.register(name, udaf)
     }
 }
 

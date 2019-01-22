@@ -1,5 +1,6 @@
 rootProject.name = "kspark"
 
 include(
-    "core"
+    "core",
+    "offline"
 )
