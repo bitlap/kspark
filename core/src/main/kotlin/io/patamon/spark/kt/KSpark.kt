@@ -43,7 +43,11 @@ open class KSpark(val spark: SparkSession) : Serializable {
     fun table(tableName: String): DataFrame = spark.table(tableName)
     fun udf() = spark.udf() // do not use, see UDFRegistry
     fun cloneSession() = KSpark(spark.cloneSession())
-    fun newSession() = KSpark(spark.newSession())
+    fun newSession(conf: Map<String, String> = emptyMap()) = {
+        val s = spark.newSession()
+        conf.forEach { s.conf().set(it.key, it.value) }
+        KSpark(s)
+    }
     fun stop() = spark.stop()
     fun close() = spark.close()
 

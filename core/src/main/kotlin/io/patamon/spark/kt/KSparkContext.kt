@@ -1,6 +1,7 @@
 package io.patamon.spark.kt
 
 import org.apache.spark.sql.SparkSession
+import javax.servlet.Filter
 
 /**
  * Desc: https://spark.apache.org/docs/2.4.0/configuration.html
@@ -29,9 +30,12 @@ class KSparkContext {
      */
     var uiEnable = true
     var uiPort = 4040
+    var uiFilters = mutableListOf<Filter>()
     private fun uiSetUp() {
         sparkB.config("spark.ui.enabled", uiEnable)
         sparkB.config("spark.ui.port", uiPort.toLong())
+        if (uiFilters.isNotEmpty())
+            sparkB.config("spark.ui.filters", uiFilters.joinToString(",") { it.javaClass.canonicalName })
     }
 
     /**

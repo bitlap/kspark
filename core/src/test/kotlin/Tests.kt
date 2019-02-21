@@ -2,16 +2,14 @@ import io.patamon.spark.kt.spark
 import java.io.Serializable
 
 /**
- * Desc:
- *
  * Mail: chk19940609@gmail.com
  * Created by IceMimosa
  * Date: 2019-01-02
  */
-fun main(args: Array<String>) {
+fun main() {
     val spark = spark {
         appName = "TEST-JOB"
-        master = "local[*]"
+        master = "local[*,2]"
         hiveSupport = true
         config = mutableMapOf(
             "spark.sql.warehouse.dir" to "hdfs://127.0.0.1:9000/user/hive/warehouse/",
