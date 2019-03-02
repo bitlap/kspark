@@ -12,7 +12,8 @@ allprojects {
 
     dependencies {
         implementation(kotlin("stdlib-jdk8"))
-        testImplementation("junit", "junit", "4.12")
+        // testImplementation("junit", "junit", "4.12")
+        testImplementation("org.junit.jupiter:junit-jupiter:5.4.0")
     }
 
     repositories {

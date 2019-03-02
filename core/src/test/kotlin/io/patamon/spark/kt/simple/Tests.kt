@@ -1,3 +1,5 @@
+package io.patamon.spark.kt.simple
+
 import io.patamon.spark.kt.spark
 import java.io.Serializable
 
