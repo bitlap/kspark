@@ -12,16 +12,21 @@ import org.junit.jupiter.api.TestInstance
  * Date: 2019-03-01
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-abstract class TestSparkBase(_appName: String) {
+abstract class TestSparkBase(
+    _appName: String,
+    _uiEnable: Boolean = false
+) {
+
     // test spark session
     protected val spark = spark {
         appName = _appName
         master = "local[*,2]"
-        uiEnable = false
+        uiEnable = _uiEnable
         hiveSupport = true
         config = mutableMapOf(
             "spark.sql.warehouse.dir" to "file:///tmp/spark-sql-warehouse",
             // "hive.metastore.warehouse.dir" to "file:///tmp/spark-sql-warehouse",
+            // "hive.metastore.uris" to "thrift://localhost:9083",
             "spark.sql.shuffle.partitions" to "3",
             "spark.driver.host" to "127.0.0.1"
         )
