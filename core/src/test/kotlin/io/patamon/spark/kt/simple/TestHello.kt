@@ -11,6 +11,7 @@ object TestHello : TestSparkBase("Test Hello") {
 
     @Test
     fun test() {
+        spark.sql("create table if not exists test.a(a int)")
         println("aaa")
     }
 

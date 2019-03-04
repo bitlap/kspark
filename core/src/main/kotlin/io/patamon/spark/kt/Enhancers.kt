@@ -1,5 +1,6 @@
 package io.patamon.spark.kt
 
+import org.apache.spark.sql.Row
 import org.apache.spark.sql.SaveMode
 
 /**
@@ -17,7 +18,7 @@ fun DataFrame.save(
     partitionBy: List<String> = emptyList(),
     options: Map<String, String> = emptyMap()
 ) {
-    if (!this.isEmpty) {
+    if (!this.isEmpty()) {
         this.write().format(format)
             .mode(mode)
             .partitionBy(*partitionBy.toTypedArray())
@@ -43,3 +44,10 @@ fun DataFrame.saveAsOrc(
 ) {
     this.save(path, "orc", mode, partitionBy, options)
 }
+
+
+/**
+ * Row Enhance
+ */
+fun Row.getString(col: String) = this.getAs<String>(col)
+fun Row.getBoolean(col: String) = this.getAs<Boolean>(col)

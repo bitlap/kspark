@@ -40,7 +40,7 @@ open class KSpark(val spark: SparkSession) : Serializable {
     fun version() = spark.version()
     fun read() = spark.read()
     fun readStream() = spark.readStream()
-    fun table(tableName: String): DataFrame = spark.table(tableName)
+    fun table(tableName: String): DataFrame = spark.table(tableName).df()
     fun udf() = spark.udf() // do not use, see UDFRegistry
     fun cloneSession() = KSpark(spark.cloneSession())
     fun newSession(conf: Map<String, String> = emptyMap()) = {
@@ -52,23 +52,24 @@ open class KSpark(val spark: SparkSession) : Serializable {
     fun close() = spark.close()
 
     // Inside Functions Create DataFrame
-    inline fun <reified T: Any> createDataFrame(data: List<T>): DataFrame = spark.createDataFrame(data, T::class.java)
+    inline fun <reified T: Any> createDataFrame(data: List<T>): DataFrame = spark.createDataFrame(data, T::class.java).df()
     inline fun <reified T: Any> createDataFrame(vararg data: T): DataFrame = this.createDataFrame(mutableListOf(*data))
-    fun createDataFrame(data: List<*>, beanClass: KClass<*>): DataFrame = spark.createDataFrame(data, beanClass.java)
-    fun createDataFrame(data: List<Row>, structType: StructType): DataFrame = spark.createDataFrame(data, structType)
+    fun createDataFrame(data: List<*>, beanClass: KClass<*>): DataFrame = spark.createDataFrame(data, beanClass.java).df()
+    fun createDataFrame(data: List<Row>, structType: StructType): DataFrame = spark.createDataFrame(data, structType).df()
 
-    inline fun <reified T: Any> createDataFrame(data: RDD<T>): DataFrame = spark.createDataFrame(data, T::class.java)
-    fun createDataFrame(data: RDD<*>, beanClass: KClass<*>): DataFrame = spark.createDataFrame(data, beanClass.java)
+    inline fun <reified T: Any> createDataFrame(data: RDD<T>): DataFrame = spark.createDataFrame(data, T::class.java).df()
+    fun createDataFrame(data: RDD<*>, beanClass: KClass<*>): DataFrame = spark.createDataFrame(data, beanClass.java).df()
 
-    inline fun <reified T: Any> createDataFrame(data: JavaRDD<T>): DataFrame = spark.createDataFrame(data, T::class.java)
-    fun createDataFrame(data: JavaRDD<*>, beanClass: KClass<*>): DataFrame = spark.createDataFrame(data, beanClass.java)
+    inline fun <reified T: Any> createDataFrame(data: JavaRDD<T>): DataFrame = spark.createDataFrame(data, T::class.java).df()
+    fun createDataFrame(data: JavaRDD<*>, beanClass: KClass<*>): DataFrame = spark.createDataFrame(data, beanClass.java).df()
 
-    fun createDataFrame(data: RDD<Row>, structType: StructType): DataFrame = spark.createDataFrame(data, structType)
-    fun createDataFrame(data: JavaRDD<Row>, structType: StructType): DataFrame = spark.createDataFrame(data, structType)
-    fun createDataFrame(data: RDD<Row>, structType: StructType, needsConversion: Boolean): DataFrame = spark.createDataFrame(data, structType, needsConversion)
+    fun createDataFrame(data: RDD<Row>, structType: StructType): DataFrame = spark.createDataFrame(data, structType).df()
+    fun createDataFrame(data: JavaRDD<Row>, structType: StructType): DataFrame = spark.createDataFrame(data, structType).df()
+    fun createDataFrame(data: RDD<Row>, structType: StructType, needsConversion: Boolean): DataFrame
+            = spark.createDataFrame(data, structType, needsConversion).df()
 
-    fun emptyDataFrame(): DataFrame = spark.emptyDataFrame()
-    fun sql(sql: String): DataFrame = spark.sql(sql)
+    fun emptyDataFrame(): DataFrame = DataFrame(spark.emptyDataFrame())
+    fun sql(sql: String): DataFrame = DataFrame(spark.sql(sql))
 
     // Extend Functions
     fun <T> parallelize(data: List<T>, numSlices: Int = jsc.defaultParallelism()) = jsc.parallelize(data, numSlices)

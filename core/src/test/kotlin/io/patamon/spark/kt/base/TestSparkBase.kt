@@ -1,6 +1,8 @@
 package io.patamon.spark.kt.base
 
 import io.patamon.spark.kt.spark
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.TestInstance
 
 /**
  * Desc: Test spark session base
@@ -9,6 +11,7 @@ import io.patamon.spark.kt.spark
  * Created by IceMimosa
  * Date: 2019-03-01
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class TestSparkBase(_appName: String) {
     // test spark session
     protected val spark = spark {
@@ -29,5 +32,16 @@ abstract class TestSparkBase(_appName: String) {
         // create test database
         spark.sql("create database if not exists test")
         spark.sql("set hive.exec.dynamic.partition.mode=nonstrict")
+    }
+
+    @AfterAll
+    fun afterAll() {
+        spark.sql("show tables in test").collect().forEach { row ->
+            val table = row.getString(1)
+            val temp = row.getBoolean(2)
+            if (!temp) {
+                spark.sql("drop table if exists test.$table")
+            }
+        }
     }
 }
