@@ -2,11 +2,16 @@ package io.patamon.spark.kt
 
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.SaveMode
+import scala.collection.JavaConverters
 
 /**
  * List to DataFrame
  */
 inline fun <reified T: Any> List<T>?.toDF(spark: KSpark): DataFrame = spark.createDataFrame(this ?: emptyList())
+fun <T> List<T>?.toSeq() =
+    JavaConverters.asScalaIteratorConverter((this ?: emptyList()).iterator()).asScala().toSeq()
+inline fun <reified T: Any> Array<out T>?.toSeq() =
+    (this ?: emptyArray()).toList().toSeq()
 
 /**
  * Save functions
