@@ -12,6 +12,15 @@ fun <T> List<T>?.toSeq() =
     JavaConverters.asScalaIteratorConverter((this ?: emptyList()).iterator()).asScala().toSeq()
 inline fun <reified T: Any> Array<out T>?.toSeq() =
     (this ?: emptyArray()).toList().toSeq()
+inline fun <reified T: Any> scala.Array<T>?.toList(): List<T> {
+    this ?: return emptyList()
+    val bb = object : Iterator<T> {
+        private var i = 0
+        override fun next() = this@toList.apply(i++)
+        override fun hasNext() = i < this@toList.length()
+    }
+    return bb.asSequence().toList()
+}
 
 /**
  * Save functions
