@@ -89,6 +89,16 @@ class DataFrame(val _ds: Dataset<Row>) {
     fun withColumn(colName: String, col: Column) = _ds.withColumn(colName, col).df()
     fun withColumnRenamed(existingName: String, newName: String) = _ds.withColumnRenamed(existingName, newName).df()
     fun drop(colName: String) = _ds.drop(colName).df()
+    fun drop(vararg colNames: String) = _ds.drop(colNames.toSeq()).df()
+    fun drop(col: Column) = _ds.drop(col).df()
+    fun dropDuplicates() = _ds.dropDuplicates().df()
+    fun dropDuplicates(col1: String, vararg cols: String) = _ds.dropDuplicates(col1, cols.toSeq()).df()
+    fun dropDuplicates(colNames: List<String>) = _ds.dropDuplicates(colNames.toSeq()).df()
+    fun describe(vararg cols: String) = _ds.describe(cols.toSeq()).df()
+    fun head(n: Int) = _ds.head(n).toList()
+    fun head() = _ds.head()
+    fun first() = _ds.first()
+
 
     fun isEmpty() = _ds.isEmpty
     fun write() = _ds.write()
