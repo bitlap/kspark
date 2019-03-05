@@ -51,8 +51,10 @@ class DataFrame(val _ds: Dataset<Row>) {
     fun join(right: Dataset<*>, joinExprs: Column, joinType: String = "inner") =
         _ds.join(right, joinExprs, joinType).df()
     fun crossJoin(right: Dataset<*>) = _ds.crossJoin(right).df()
-    fun <T> joinWith(other: Dataset<T>, condition: Column, joinType: String = "inner") = _ds.joinWith(other, condition, joinType)
-    fun sortWithinPartitions(sortCol: String, vararg sortCols: String) = _ds.sortWithinPartitions(sortCol, sortCols.toSeq()).df()
+    fun <T> joinWith(other: Dataset<T>, condition: Column, joinType: String = "inner") =
+        _ds.joinWith(other, condition, joinType)
+    fun sortWithinPartitions(sortCol: String, vararg sortCols: String) =
+        _ds.sortWithinPartitions(sortCol, sortCols.toSeq()).df()
     fun sortWithinPartitions(vararg sortExprs: Column) = _ds.sortWithinPartitions(sortExprs.toSeq()).df()
     fun sort(sortCol: String, vararg sortCols: String) = _ds.sort(sortCol, sortCols.toSeq()).df()
     fun sort(vararg sortExprs: Column) = _ds.sort(sortExprs.toSeq()).df()
@@ -80,7 +82,7 @@ class DataFrame(val _ds: Dataset<Row>) {
     fun rollup(col1: String, vararg cols: String) = _ds.rollup(col1, cols.toSeq())
     fun cube(vararg cols: Column) = _ds.cube(cols.toSeq())
     fun cube(col1: String, vararg cols: String) = _ds.cube(col1, cols.toSeq())
-    fun <T> reduce(func: (Row, Row) -> Row) = _ds.javaRDD().reduce(func)
+    fun reduce(func: (Row, Row) -> Row) = _ds.javaRDD().reduce(func)
     // TODO: groupByKey
     fun agg(aggExpr: Pair<String, String>, vararg aggExprs: Pair<String, String>) =
         _ds.agg(Tuple2(aggExpr.first, aggExpr.second), aggExprs.map { Tuple2(it.first, it.second) }.toSeq()).df()
@@ -145,10 +147,6 @@ class DataFrame(val _ds: Dataset<Row>) {
     fun writeStream() = _ds.writeStream()
     fun toJSON() = _ds.toJSON()
     fun inputFiles() = _ds.inputFiles().toList()
-
-
-
-
 
 }
 
