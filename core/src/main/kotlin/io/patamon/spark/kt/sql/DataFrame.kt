@@ -2,7 +2,6 @@ package io.patamon.spark.kt.sql
 
 import io.patamon.spark.kt.df
 import io.patamon.spark.kt.utils.toSeq
-import org.apache.spark.sql.Column
 import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.Encoder
 import org.apache.spark.sql.Row
@@ -10,8 +9,6 @@ import org.apache.spark.storage.StorageLevel
 import org.apache.spark.util.Utils
 import scala.Symbol
 import scala.Tuple2
-
-
 
 /**
  * Desc: typealias DataFrame
@@ -26,6 +23,7 @@ class DataFrame(val _ds: Dataset<Row>) {
 
     // functions from dataset
     override fun toString() = _ds.toString()
+    operator fun get(colName: String) = _ds.apply(colName)
     fun toDF() = _ds.toDF().df()
     fun toDF(vararg colNames: String) = _ds.toDF(*colNames).df()
     // TODO: other implicit encoders
@@ -50,18 +48,20 @@ class DataFrame(val _ds: Dataset<Row>) {
     fun join(right: Dataset<*>, usingColumn: String) = join(right, listOf(usingColumn))
     fun join(right: Dataset<*>, usingColumns: List<String>, joinType: String = "inner") =
         _ds.join(right, usingColumns.toSeq(), joinType).df()
-    fun join(right: Dataset<*>, joinExprs: Column, joinType: String = "inner") =
-        _ds.join(right, joinExprs, joinType).df()
+    fun join(right: Dataset<*>, joinExprs: KColumn, joinType: String = "inner") =
+        _ds.join(right, joinExprs.column, joinType).df()
     fun crossJoin(right: Dataset<*>) = _ds.crossJoin(right).df()
-    fun <T> joinWith(other: Dataset<T>, condition: Column, joinType: String = "inner") =
-        _ds.joinWith(other, condition, joinType)
+    fun <T> joinWith(other: Dataset<T>, condition: KColumn, joinType: String = "inner") =
+        _ds.joinWith(other, condition.column, joinType)
     fun sortWithinPartitions(sortCol: String, vararg sortCols: String) =
         _ds.sortWithinPartitions(sortCol, sortCols.toSeq()).df()
-    fun sortWithinPartitions(vararg sortExprs: Column) = _ds.sortWithinPartitions(sortExprs.toSeq()).df()
+    fun sortWithinPartitions(vararg sortExprs: KColumn) =
+        _ds.sortWithinPartitions(sortExprs.map { it.column }.toSeq()).df()
     fun sort(sortCol: String, vararg sortCols: String) = _ds.sort(sortCol, sortCols.toSeq()).df()
-    fun sort(vararg sortExprs: Column) = _ds.sort(sortExprs.toSeq()).df()
+    fun sort(vararg sortExprs: KColumn) =
+        _ds.sort(sortExprs.map { it.column }.toSeq()).df()
     fun orderBy(sortCol: String, vararg sortCols: String) = _ds.orderBy(sortCol, sortCols.toSeq()).df()
-    fun orderBy(vararg sortExprs: Column) = _ds.orderBy(sortExprs.toSeq()).df()
+    fun orderBy(vararg sortExprs: KColumn) = _ds.orderBy(sortExprs.map { it.column }.toSeq()).df()
     fun apply(colName: String) = _ds.apply(colName)
     fun hint(name: String, vararg parameters: Any) = _ds.hint(name, parameters)
     fun col(colName: String) = _ds.col(colName)
@@ -70,26 +70,25 @@ class DataFrame(val _ds: Dataset<Row>) {
     fun alias(alias: String) = `as`(alias)
     fun alias(alias: Symbol) = `as`(alias)
     fun select(sortCol: String, vararg sortCols: String) = _ds.select(sortCol, sortCols.toSeq()).df()
-    // TODO: Column operator
     // TODO: Spark functions
-    fun select(vararg sortExprs: Column) = _ds.select(sortExprs.toSeq()).df()
+    fun select(vararg sortExprs: KColumn) = _ds.select(sortExprs.map { it.column }.toSeq()).df()
     fun selectExpr(vararg exprs: String) = _ds.selectExpr(exprs.toSeq()).df()
-    fun filter(condition: Column) = _ds.filter(condition).df()
+    fun filter(condition: KColumn) = _ds.filter(condition.column).df()
     fun filter(conditionExpr: String) = _ds.filter(conditionExpr).df()
-    fun where(condition: Column) = _ds.where(condition).df()
+    fun where(condition: KColumn) = _ds.where(condition.column).df()
     fun where(conditionExpr: String) = _ds.where(conditionExpr).df()
-    fun groupBy(vararg cols: Column) = _ds.groupBy(cols.toSeq())
+    fun groupBy(vararg cols: KColumn) = _ds.groupBy(cols.map { it.column }.toSeq())
     fun groupBy(col1: String, vararg cols: String) = _ds.groupBy(col1, cols.toSeq())
-    fun rollup(vararg cols: Column) = _ds.rollup(cols.toSeq())
+    fun rollup(vararg cols: KColumn) = _ds.rollup(cols.map { it.column }.toSeq())
     fun rollup(col1: String, vararg cols: String) = _ds.rollup(col1, cols.toSeq())
-    fun cube(vararg cols: Column) = _ds.cube(cols.toSeq())
+    fun cube(vararg cols: KColumn) = _ds.cube(cols.map { it.column }.toSeq())
     fun cube(col1: String, vararg cols: String) = _ds.cube(col1, cols.toSeq())
     fun reduce(func: (Row, Row) -> Row) = _ds.javaRDD().reduce(func)
     // TODO: groupByKey
     fun agg(aggExpr: Pair<String, String>, vararg aggExprs: Pair<String, String>) =
         _ds.agg(Tuple2(aggExpr.first, aggExpr.second), aggExprs.map { Tuple2(it.first, it.second) }.toSeq()).df()
     fun agg(exprs: Map<String, String>) = _ds.agg(exprs).df()
-    fun agg(expr: Column, vararg exprs: Column) = _ds.agg(expr, exprs.toSeq()).df()
+    fun agg(expr: KColumn, vararg exprs: KColumn) = _ds.agg(expr.column, exprs.map { it.column }.toSeq()).df()
     fun limit(n: Int) = _ds.limit(n).df()
     fun unionAll(other: Dataset<Row>) = _ds.unionAll(other).df()
     fun union(other: Dataset<Row>) = _ds.union(other).df()
@@ -104,11 +103,11 @@ class DataFrame(val _ds: Dataset<Row>) {
         sample(false, fraction, seed)
     fun randomSplit(weights: List<Double>, seed: Long = Utils.random().nextLong()) =
         _ds.randomSplitAsList(weights.toDoubleArray(), seed).map { it.df() }
-    fun withColumn(colName: String, col: Column) = _ds.withColumn(colName, col).df()
+    fun withColumn(colName: String, col: KColumn) = _ds.withColumn(colName, col.column).df()
     fun withColumnRenamed(existingName: String, newName: String) = _ds.withColumnRenamed(existingName, newName).df()
     fun drop(colName: String) = _ds.drop(colName).df()
     fun drop(vararg colNames: String) = _ds.drop(colNames.toSeq()).df()
-    fun drop(col: Column) = _ds.drop(col).df()
+    fun drop(col: KColumn) = _ds.drop(col.column).df()
     fun dropDuplicates() = _ds.dropDuplicates().df()
     fun dropDuplicates(col1: String, vararg cols: String) = _ds.dropDuplicates(col1, cols.toSeq()).df()
     fun dropDuplicates(colNames: List<String>) = _ds.dropDuplicates(colNames.toSeq()).df()
@@ -129,9 +128,9 @@ class DataFrame(val _ds: Dataset<Row>) {
     fun collect() = _ds.collectAsList().toList()
     fun count() = _ds.count()
     fun repartition(numPartitions: Int) = _ds.repartition(numPartitions).df()
-    fun repartition(vararg partitionExprs: Column) = _ds.repartition(partitionExprs.toSeq()).df()
-    fun repartition(numPartitions: Int, vararg partitionExprs: Column) =
-        _ds.repartition(numPartitions, partitionExprs.toSeq()).df()
+    fun repartition(vararg partitionExprs: KColumn) = _ds.repartition(partitionExprs.map { it.column }.toSeq()).df()
+    fun repartition(numPartitions: Int, vararg partitionExprs: KColumn) =
+        _ds.repartition(numPartitions, partitionExprs.map { it.column }.toSeq()).df()
     fun coalesce(numPartitions: Int) = _ds.coalesce(numPartitions).df()
     fun distinct() = _ds.distinct().df()
     fun persist() = _ds.persist().df()
@@ -149,6 +148,4 @@ class DataFrame(val _ds: Dataset<Row>) {
     fun writeStream() = _ds.writeStream()
     fun toJSON() = _ds.toJSON()
     fun inputFiles() = _ds.inputFiles().toList()
-
 }
-

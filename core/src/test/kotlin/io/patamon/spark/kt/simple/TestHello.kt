@@ -1,6 +1,7 @@
 package io.patamon.spark.kt.simple
 
 import io.patamon.spark.kt.base.TestSparkBase
+import io.patamon.spark.kt.sql.col
 import org.junit.jupiter.api.Test
 import java.io.Serializable
 
@@ -22,7 +23,9 @@ object TestHello : TestSparkBase("Test Hello") {
             """
         select *, f('udf') from test
         """.trimIndent()
-        ).show()
+        ).select(col("*"))
+            .orderBy(col("age").desc())
+            .show()
     }
 
 }
