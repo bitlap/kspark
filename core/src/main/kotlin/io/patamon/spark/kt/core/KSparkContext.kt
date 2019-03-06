@@ -1,5 +1,6 @@
-package io.patamon.spark.kt
+package io.patamon.spark.kt.core
 
+import io.patamon.spark.kt.KSpark
 import org.apache.spark.sql.SparkSession
 import javax.servlet.Filter
 

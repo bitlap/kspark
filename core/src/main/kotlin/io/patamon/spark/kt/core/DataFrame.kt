@@ -1,5 +1,7 @@
-package io.patamon.spark.kt
+package io.patamon.spark.kt.core
 
+import io.patamon.spark.kt.df
+import io.patamon.spark.kt.utils.toSeq
 import org.apache.spark.sql.Column
 import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.Encoder
@@ -9,7 +11,7 @@ import org.apache.spark.util.Utils
 import scala.Symbol
 import scala.Tuple2
 
-fun Dataset<Row>.df(): DataFrame = DataFrame(this)
+
 
 /**
  * Desc: typealias DataFrame

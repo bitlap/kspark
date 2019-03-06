@@ -1,11 +1,14 @@
 package io.patamon.spark.kt
 
+import io.patamon.spark.kt.core.*
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.mapred.InputFormat
 import org.apache.hadoop.mapred.JobConf
 import org.apache.spark.api.java.JavaRDD
 import org.apache.spark.api.java.JavaSparkContext
 import org.apache.spark.rdd.RDD
+import org.apache.spark.sql.Column
+import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.expressions.UserDefinedAggregateFunction
@@ -16,12 +19,15 @@ import kotlin.reflect.KClass
 import org.apache.hadoop.mapreduce.InputFormat as NewInputFormat
 
 /**
+ * Global functions
+ */
+fun spark(context: KSparkContext.() -> Unit): KSpark = KSparkContext().apply(context).getOrCreate()
+fun col(name: String) = KColumn(Column(name))
+fun Dataset<Row>.df(): DataFrame = DataFrame(this)
+
+/**
  * Desc: spark wrapper
  */
-fun spark(context: KSparkContext.() -> Unit): KSpark =
-    KSparkContext().apply(context).getOrCreate()
-
-
 open class KSpark(val spark: SparkSession) : Serializable {
     val udfRegistry = UDFRegistry(spark)
 
