@@ -1,13 +1,16 @@
 package io.patamon.spark.kt
 
-import io.patamon.spark.kt.core.*
+import io.patamon.spark.kt.core.KSparkContext
+import io.patamon.spark.kt.core.UDFRegistry
+import io.patamon.spark.kt.sql.DataFrame
+import io.patamon.spark.kt.sql.KColumn
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.mapred.InputFormat
 import org.apache.hadoop.mapred.JobConf
 import org.apache.spark.api.java.JavaRDD
 import org.apache.spark.api.java.JavaSparkContext
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.Column
+import org.apache.spark.sql.ColumnName
 import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.SparkSession
@@ -22,7 +25,7 @@ import org.apache.hadoop.mapreduce.InputFormat as NewInputFormat
  * Global functions
  */
 fun spark(context: KSparkContext.() -> Unit): KSpark = KSparkContext().apply(context).getOrCreate()
-fun col(name: String) = KColumn(Column(name))
+fun col(name: String) = KColumn(ColumnName(name))
 fun Dataset<Row>.df(): DataFrame = DataFrame(this)
 
 /**

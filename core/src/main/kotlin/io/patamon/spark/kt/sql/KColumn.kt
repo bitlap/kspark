@@ -1,7 +1,8 @@
-package io.patamon.spark.kt.core
+package io.patamon.spark.kt.sql
 
 import io.patamon.spark.kt.utils.toSeq
 import org.apache.spark.sql.Column
+import org.apache.spark.sql.ColumnName
 import org.apache.spark.sql.types.DataType
 import org.apache.spark.sql.types.Metadata
 import scala.Symbol
@@ -9,7 +10,7 @@ import scala.Symbol
 /**
  * Desc: Column wrapper functions, and return Scala [Column]
  */
-class KColumn(val column: Column) {
+class KColumn(val column: ColumnName) {
 
     operator fun unaryMinus() = column.`unary_$minus`()
     operator fun not() = column.`unary_$bang`()

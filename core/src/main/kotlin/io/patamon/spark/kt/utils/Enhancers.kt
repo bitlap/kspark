@@ -1,7 +1,7 @@
 package io.patamon.spark.kt.utils
 
 import io.patamon.spark.kt.KSpark
-import io.patamon.spark.kt.core.DataFrame
+import io.patamon.spark.kt.sql.DataFrame
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.SaveMode
 import scala.collection.JavaConverters

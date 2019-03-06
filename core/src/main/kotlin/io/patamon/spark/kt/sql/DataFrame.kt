@@ -1,4 +1,4 @@
-package io.patamon.spark.kt.core
+package io.patamon.spark.kt.sql
 
 import io.patamon.spark.kt.df
 import io.patamon.spark.kt.utils.toSeq
