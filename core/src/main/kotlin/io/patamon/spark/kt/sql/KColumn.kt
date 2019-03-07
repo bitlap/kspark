@@ -7,7 +7,7 @@ import org.apache.spark.sql.types.Metadata
 import scala.Symbol
 
 /**
- * Desc: Column wrapper functions, and return Scala [Column]
+ * Desc: Column wrapper functions, and return Scala Spark [Column]
  */
 class KColumn(val column: Column) {
 
