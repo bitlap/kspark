@@ -196,6 +196,46 @@ fun pow(l: KColumn, r: KColumn) = functions.pow(l.column, r.column).k()
 fun pow(l: KColumn, rightName: String) = functions.pow(l.column, rightName).k()
 fun pow(leftName: String, r: KColumn) = functions.pow(leftName, r.column).k()
 fun pow(leftName: String, rightName: String) = functions.pow(leftName, rightName).k()
+fun pow(l: KColumn, r: Double) = functions.pow(l.column, r).k()
+fun pow(leftName: String, r: Double) = functions.pow(leftName, r).k()
+fun pow(l: Double, r: KColumn) = functions.pow(l, r.column).k()
+fun pow(l: Double, rightName: String) = functions.pow(l, rightName).k()
+fun pmod(dividend: KColumn, divisor: KColumn) = functions.pmod(dividend.column, divisor.column).k()
+fun rint(e: KColumn) = functions.rint(e.column).k()
+fun rint(columnName: String) = functions.rint(columnName).k()
+fun round(e: KColumn) = functions.round(e.column).k()
+fun round(e: KColumn, scale: Int) = functions.round(e.column, scale).k()
+fun bround(e: KColumn) = functions.bround(e.column).k()
+fun bround(e: KColumn, scale: Int) = functions.bround(e.column, scale).k()
+fun shiftLeft(e: KColumn, numBits: Int) = functions.shiftLeft(e.column, numBits).k()
+fun shiftRight(e: KColumn, numBits: Int) = functions.shiftRight(e.column, numBits).k()
+fun shiftRightUnsigned(e: KColumn, numBits: Int) = functions.shiftRightUnsigned(e.column, numBits).k()
+fun signum(e: KColumn) = functions.signum(e.column).k()
+fun signum(columnName: String) = functions.signum(columnName).k()
+fun sin(e: KColumn) = functions.sin(e.column).k()
+fun sin(columnName: String) = functions.sin(columnName).k()
+fun sinh(e: KColumn) = functions.sinh(e.column).k()
+fun sinh(columnName: String) = functions.sinh(columnName).k()
+fun tan(e: KColumn) = functions.tan(e.column).k()
+fun tan(columnName: String) = functions.tan(columnName).k()
+fun tanh(e: KColumn) = functions.tanh(e.column).k()
+fun tanh(columnName: String) = functions.tanh(columnName).k()
+fun degrees(e: KColumn) = functions.degrees(e.column).k()
+fun degrees(columnName: String) = functions.degrees(columnName).k()
+fun radians(e: KColumn) = functions.radians(e.column).k()
+fun radians(columnName: String) = functions.radians(columnName).k()
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Misc functions
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
 
 
 
