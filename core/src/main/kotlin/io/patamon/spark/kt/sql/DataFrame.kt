@@ -23,7 +23,7 @@ class DataFrame(val _ds: Dataset<Row>) {
 
     // functions from dataset
     override fun toString() = _ds.toString()
-    operator fun get(colName: String) = _ds.apply(colName)
+    operator fun get(colName: String) = _ds.apply(colName).k()
     fun toDF() = _ds.toDF().df()
     fun toDF(vararg colNames: String) = _ds.toDF(*colNames).df()
     // TODO: other implicit encoders
@@ -37,7 +37,7 @@ class DataFrame(val _ds: Dataset<Row>) {
     fun isEmpty() = _ds.isEmpty
     fun isStreaming() = _ds.isStreaming
     fun checkpoint(eager: Boolean = true) = _ds.checkpoint(eager).df()
-    fun localCheckpoint(eager: Boolean = true) = _ds.localCheckpoint(eager)
+    fun localCheckpoint(eager: Boolean = true) = _ds.localCheckpoint(eager).df()
     fun withWatermark(eventTime: String, delayThreshold: String) = _ds.withWatermark(eventTime, delayThreshold).df()
     fun show() = _ds.show()
     fun show(numRows: Int = 20, truncate: Boolean = true) = _ds.show(numRows, truncate)
@@ -62,9 +62,9 @@ class DataFrame(val _ds: Dataset<Row>) {
         _ds.sort(sortExprs.map { it.column }.toSeq()).df()
     fun orderBy(sortCol: String, vararg sortCols: String) = _ds.orderBy(sortCol, sortCols.toSeq()).df()
     fun orderBy(vararg sortExprs: KColumn) = _ds.orderBy(sortExprs.map { it.column }.toSeq()).df()
-    fun apply(colName: String) = _ds.apply(colName)
-    fun hint(name: String, vararg parameters: Any) = _ds.hint(name, parameters)
-    fun col(colName: String) = _ds.col(colName)
+    fun apply(colName: String) = _ds.apply(colName).k()
+    fun hint(name: String, vararg parameters: Any) = _ds.hint(name, parameters).df()
+    fun col(colName: String) = _ds.col(colName).k()
     fun `as`(alias: String) = _ds.`as`(alias).df()
     fun `as`(alias: Symbol) = _ds.`as`(alias).df()
     fun alias(alias: String) = `as`(alias)
@@ -92,7 +92,7 @@ class DataFrame(val _ds: Dataset<Row>) {
     fun limit(n: Int) = _ds.limit(n).df()
     fun unionAll(other: Dataset<Row>) = _ds.unionAll(other).df()
     fun union(other: Dataset<Row>) = _ds.union(other).df()
-    fun unionByName(other: Dataset<Row>) = _ds.unionByName(other)
+    fun unionByName(other: Dataset<Row>) = _ds.unionByName(other).df()
     fun intersect(other: Dataset<Row>) = _ds.intersect(other).df()
     fun intersectAll(other: Dataset<Row>) = _ds.intersectAll(other).df()
     fun except(other: Dataset<Row>) = _ds.except(other).df()

@@ -2,6 +2,7 @@ package io.patamon.spark.kt.sql
 
 import io.patamon.spark.kt.utils.toSeq
 import org.apache.spark.sql.Column
+import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.functions
 
 /**
@@ -11,7 +12,6 @@ fun Column.k() = KColumn(this)
 fun col(colName: String) = functions.col(colName).k()
 fun column(colName: String) = functions.column(colName).k()
 fun lit(literal: Any) = functions.lit(literal).k()
-fun when_(condition: KColumn, value: Any) = functions.`when`(condition.column, value).k()
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Sort functions
@@ -104,4 +104,103 @@ fun row_number() = functions.row_number().k()
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Non-aggregate functions
 //////////////////////////////////////////////////////////////////////////////////////////////
+fun array(vararg cols: KColumn) = functions.array(cols.map { it.column }.toSeq()).k()
+fun array(colName: String, vararg colNames: String) = functions.array(colName, colNames.toSeq()).k()
+fun map(vararg cols: KColumn) = functions.map(cols.map { it.column }.toSeq()).k()
+fun map_from_arrays(keys: KColumn, values: KColumn) = functions.map_from_arrays(keys.column, values.column).k()
+fun <T> broadcast(df: Dataset<T>): Dataset<T> = functions.broadcast(df)
+fun coalesce(vararg e: KColumn) = functions.coalesce(e.map { it.column }.toSeq()).k()
+fun input_file_name() = functions.input_file_name().k()
+fun isnan(e: KColumn) = functions.isnan(e.column).k()
+fun isnull(e: KColumn) = functions.isnull(e.column).k()
+fun monotonically_increasing_id() = functions.monotonically_increasing_id().k()
+fun nanvl(col1: KColumn, col2: KColumn) = functions.nanvl(col1.column, col2.column).k()
+fun negate(e: KColumn) = functions.negate(e.column).k()
+fun not(e: KColumn) = functions.not(e.column).k()
+fun rand(seed: Long) = functions.rand(seed).k()
+fun rand() = functions.rand().k()
+fun randn(seed: Long) = functions.randn(seed).k()
+fun randn() = functions.randn().k()
+fun spark_partition_id() = functions.spark_partition_id().k()
+fun sqrt(e: KColumn) = functions.sqrt(e.column).k()
+fun sqrt(colName: String) = functions.sqrt(colName).k()
+fun struct(vararg cols: KColumn) = functions.struct(cols.map { it.column }.toSeq()).k()
+fun struct(colName: String, vararg colNames: String) = functions.struct(colName, colNames.toSeq()).k()
+fun when_(condition: KColumn, value: Any) = functions.`when`(condition.column, value).k()
+fun bitwiseNOT(e: KColumn) = functions.bitwiseNOT(e.column).k()
+fun expr(expr: String) = functions.expr(expr).k()
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Math Functions
+//////////////////////////////////////////////////////////////////////////////////////////////
+fun abs(e: KColumn) = functions.abs(e.column).k()
+fun abs(columnName: String) = functions.abs(col(columnName).column).k()
+fun acos(e: KColumn) = functions.acos(e.column).k()
+fun acos(columnName: String) = functions.acos(columnName).k()
+fun asin(e: KColumn) = functions.asin(e.column).k()
+fun asin(columnName: String) = functions.asin(columnName).k()
+fun atan(e: KColumn) = functions.atan(e.column).k()
+fun atan(columnName: String) = functions.atan(columnName).k()
+fun atan2(y: KColumn, x: KColumn) = functions.atan2(y.column, x.column).k()
+fun atan2(y: KColumn, xName: String) = functions.atan2(y.column, xName).k()
+fun atan2(yName: String, x: KColumn) = functions.atan2(yName, x.column).k()
+fun atan2(yName: String, xName: String) = functions.atan2(yName, xName).k()
+fun atan2(y: KColumn, xValue: Double) = functions.atan2(y.column, xValue).k()
+fun atan2(yName: String, xValue: Double) = functions.atan2(yName, xValue).k()
+fun atan2(yValue: Double, x: KColumn) = functions.atan2(yValue, x.column).k()
+fun atan2(yValue: Double, xName: String) = functions.atan2(yValue, xName).k()
+fun bin(e: KColumn) = functions.bin(e.column).k()
+fun bin(columnName: String) = functions.bin(columnName).k()
+fun cbrt(e: KColumn) = functions.cbrt(e.column).k()
+fun cbrt(columnName: String) = functions.cbrt(columnName).k()
+fun ceil(e: KColumn) = functions.ceil(e.column).k()
+fun ceil(columnName: String) = functions.ceil(columnName).k()
+fun conv(num: KColumn, fromBase: Int, toBase: Int) = functions.conv(num.column, fromBase, toBase)
+fun cos(e: KColumn) = functions.cos(e.column).k()
+fun cos(columnName: String) = functions.cos(columnName).k()
+fun cosh(e: KColumn) = functions.cosh(e.column).k()
+fun cosh(columnName: String) = functions.cosh(columnName).k()
+fun exp(e: KColumn) = functions.exp(e.column).k()
+fun exp(columnName: String) = functions.exp(columnName).k()
+fun expm1(e: KColumn) = functions.expm1(e.column).k()
+fun expm1(columnName: String) = functions.expm1(columnName).k()
+fun factorial(e: KColumn) = functions.factorial(e.column).k()
+fun factorial(columnName: String) = functions.factorial(col(columnName).column).k()
+fun floor(e: KColumn) = functions.floor(e.column).k()
+fun floor(columnName: String) = functions.floor(columnName).k()
+fun greatest(vararg exprs: KColumn) = functions.greatest(exprs.map { it.column }.toSeq()).k()
+fun greatest(columnName: String, vararg columnNames: String) = functions.greatest(columnName, columnNames.toSeq()).k()
+fun hex(column: KColumn) = functions.hex(column.column).k()
+fun unhex(column: KColumn) = functions.unhex(column.column).k()
+fun hypot(l: KColumn, r: KColumn) = functions.hypot(l.column, r.column).k()
+fun hypot(l: KColumn, rightName: String) = functions.hypot(l.column, rightName).k()
+fun hypot(leftName: String, r: KColumn) = functions.hypot(leftName, r.column).k()
+fun hypot(leftName: String, rightName: String) = functions.hypot(leftName, rightName).k()
+fun hypot(l: KColumn, r: Double) = functions.hypot(l.column, r).k()
+fun hypot(leftName: String, r: Double) = functions.hypot(leftName, r).k()
+fun hypot(l: Double, r: KColumn) = functions.hypot(l, r.column).k()
+fun hypot(l: Double, rightName: String) = functions.hypot(l, rightName).k()
+fun least(vararg exprs: KColumn) = functions.least(exprs.map { it.column }.toSeq()).k()
+fun least(columnName: String, vararg columnNames: String) = functions.least(columnName, columnNames.toSeq()).k()
+fun log(e: KColumn) = functions.log(e.column).k()
+fun log(columnName: String) = functions.log(columnName).k()
+fun log(base: Double, a: KColumn) = functions.log(base, a.column).k()
+fun log(base: Double, columnName: String) = functions.log(base, columnName).k()
+fun log10(e: KColumn) = functions.log10(e.column).k()
+fun log10(columnName: String) = functions.log10(columnName).k()
+fun log1p(e: KColumn) = functions.log1p(e.column).k()
+fun log1p(columnName: String) = functions.log1p(columnName).k()
+fun log2(e: KColumn) = functions.log(e.column).k()
+fun log2(columnName: String) = functions.log(columnName).k()
+fun pow(l: KColumn, r: KColumn) = functions.pow(l.column, r.column).k()
+fun pow(l: KColumn, rightName: String) = functions.pow(l.column, rightName).k()
+fun pow(leftName: String, r: KColumn) = functions.pow(leftName, r.column).k()
+fun pow(leftName: String, rightName: String) = functions.pow(leftName, rightName).k()
+
+
+
+
+
+
+
 
