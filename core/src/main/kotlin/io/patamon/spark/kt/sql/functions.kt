@@ -8,6 +8,7 @@ import org.apache.spark.sql.functions
 import org.apache.spark.sql.types.DataType
 import org.apache.spark.sql.types.StructType
 
+object functions
 /**
  * Desc: functions as Scala Spark [functions]
  */
