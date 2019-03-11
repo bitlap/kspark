@@ -1,9 +1,12 @@
 package io.patamon.spark.kt.sql
 
+import io.patamon.spark.kt.core.UDFRegistry
 import io.patamon.spark.kt.utils.toSeq
 import org.apache.spark.sql.Column
 import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.functions
+import org.apache.spark.sql.types.DataType
+import org.apache.spark.sql.types.StructType
 
 /**
  * Desc: functions as Scala Spark [functions]
@@ -155,7 +158,7 @@ fun cbrt(e: KColumn) = functions.cbrt(e.column).k()
 fun cbrt(columnName: String) = functions.cbrt(columnName).k()
 fun ceil(e: KColumn) = functions.ceil(e.column).k()
 fun ceil(columnName: String) = functions.ceil(columnName).k()
-fun conv(num: KColumn, fromBase: Int, toBase: Int) = functions.conv(num.column, fromBase, toBase)
+fun conv(num: KColumn, fromBase: Int, toBase: Int) = functions.conv(num.column, fromBase, toBase).k()
 fun cos(e: KColumn) = functions.cos(e.column).k()
 fun cos(columnName: String) = functions.cos(columnName).k()
 fun cosh(e: KColumn) = functions.cosh(e.column).k()
@@ -228,19 +231,147 @@ fun radians(columnName: String) = functions.radians(columnName).k()
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Misc functions
 //////////////////////////////////////////////////////////////////////////////////////////////
+fun md5(e: KColumn) = functions.md5(e.column).k()
+fun sha1(e: KColumn) = functions.sha1(e.column).k()
+fun sha2(e: KColumn, numBits: Int) = functions.sha2(e.column, numBits).k()
+fun crc32(e: KColumn) = functions.crc32(e.column).k()
+fun hash(vararg cols: KColumn) = functions.hash(cols.map { it.column }.toSeq()).k()
+fun ascii(e: KColumn) = functions.ascii(e.column).k()
+fun base64(e: KColumn) = functions.base64(e.column).k()
+fun concat_ws(sep: String, vararg exprs: KColumn) = functions.concat_ws(sep, exprs.map { it.column }.toSeq()).k()
+fun decode(value: KColumn, charset: String) = functions.decode(value.column, charset).k()
+fun encode(value: KColumn, charset: String) = functions.encode(value.column, charset).k()
+fun format_number(x: KColumn, d: Int) = functions.format_number(x.column, d).k()
+fun format_string(format: String, vararg arguments: KColumn) = functions.format_string(format, arguments.map { it.column }.toSeq()).k()
+fun initcap(e: KColumn) = functions.initcap(e.column).k()
+fun instr(str: KColumn, substring: String) = functions.instr(str.column, substring).k()
+fun length(e: KColumn) = functions.length(e.column).k()
+fun lower(e: KColumn) = functions.lower(e.column).k()
+fun levenshtein(l: KColumn, r: KColumn) = functions.levenshtein(l.column, r.column).k()
+fun locate(substr: String, str: KColumn) = functions.locate(substr, str.column).k()
+fun locate(substr: String, str: KColumn, pos: Int) = functions.locate(substr, str.column, pos).k()
+fun lpad(str: KColumn, len: Int, pad: String) = functions.lpad(str.column, len, pad).k()
+fun ltrim(e: KColumn) = functions.ltrim(e.column).k()
+fun ltrim(e: KColumn, trimString: String) = functions.ltrim(e.column, trimString).k()
+fun regexp_extract(e: KColumn, exp: String, groupIdx: Int) = functions.regexp_extract(e.column, exp, groupIdx).k()
+fun regexp_replace(e: KColumn, pattern: String, replacement: String) = functions.regexp_replace(e.column, pattern, replacement).k()
+fun regexp_replace(e: KColumn, pattern: KColumn, replacement: KColumn) = functions.regexp_replace(e.column, pattern.column, replacement.column).k()
+fun unbase64(e: KColumn) = functions.unbase64(e.column).k()
+fun rpad(str: KColumn, len: Int, pad: String) = functions.rpad(str.column, len, pad).k()
+fun repeat(str: KColumn, n: Int) = functions.repeat(str.column, n).k()
+fun rtrim(e: KColumn) = functions.rtrim(e.column).k()
+fun rtrim(e: KColumn, trimString: String) = functions.rtrim(e.column, trimString).k()
+fun soundex(e: KColumn) = functions.soundex(e.column).k()
+fun split(str: KColumn, pattern: String) = functions.split(str.column, pattern).k()
+fun substring(str: KColumn, pos: Int, len: Int) = functions.substring(str.column, pos, len).k()
+fun substring_index(str: KColumn, delim: String, count: Int) = functions.substring_index(str.column, delim, count).k()
+fun translate(src: KColumn, matchingString: String, replaceString: String) = functions.translate(src.column, matchingString, replaceString).k()
+fun trim(e: KColumn) = functions.trim(e.column).k()
+fun trim(e: KColumn, trimString: String) = functions.trim(e.column, trimString).k()
+fun upper(e: KColumn) = functions.upper(e.column).k()
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+// DateTime functions
+//////////////////////////////////////////////////////////////////////////////////////////////
+fun add_months(startDate: KColumn, numMonths: Int) = functions.add_months(startDate.column, numMonths).k()
+fun current_date() = functions.current_date().k()
+fun current_timestamp() = functions.current_timestamp().k()
+fun date_format(dateExpr: KColumn, format: String) = functions.date_format(dateExpr.column, format).k()
+fun date_add(start: KColumn, days: Int) = functions.date_add(start.column, days).k()
+fun date_sub(start: KColumn, days: Int) = functions.date_sub(start.column, days).k()
+fun datediff(end: KColumn, start: KColumn) = functions.datediff(end.column, start.column).k()
+fun year(e: KColumn) = functions.year(e.column).k()
+fun quarter(e: KColumn) = functions.quarter(e.column).k()
+fun month(e: KColumn) = functions.month(e.column).k()
+fun dayofweek(e: KColumn) = functions.dayofweek(e.column).k()
+fun dayofmonth(e: KColumn) = functions.dayofmonth(e.column).k()
+fun dayofyear(e: KColumn) = functions.dayofyear(e.column).k()
+fun hour(e: KColumn) = functions.hour(e.column).k()
+fun last_day(e: KColumn) = functions.last_day(e.column).k()
+fun minute(e: KColumn) = functions.minute(e.column).k()
+fun months_between(end: KColumn, start: KColumn) = functions.months_between(end.column, start.column).k()
+fun months_between(end: KColumn, start: KColumn, roundOff: Boolean) = functions.months_between(end.column, start.column, roundOff).k()
+fun next_day(date: KColumn, dayOfWeek: String) = functions.next_day(date.column, dayOfWeek).k()
+fun second(e: KColumn) = functions.second(e.column).k()
+fun weekofyear(e: KColumn) = functions.weekofyear(e.column).k()
+fun from_unixtime(ut: KColumn) = functions.from_unixtime(ut.column).k()
+fun from_unixtime(ut: KColumn, f: String) = functions.from_unixtime(ut.column, f).k()
+fun unix_timestamp() = functions.unix_timestamp().k()
+fun unix_timestamp(s: KColumn) = functions.unix_timestamp(s.column).k()
+fun unix_timestamp(s: KColumn, p: String) = functions.unix_timestamp(s.column, p).k()
+fun to_timestamp(s: KColumn) = functions.to_timestamp(s.column).k()
+fun to_timestamp(s: KColumn, fmt: String) = functions.to_timestamp(s.column, fmt).k()
+fun to_date(e: KColumn) = functions.to_date(e.column).k()
+fun to_date(e: KColumn, fmt: String) = functions.to_date(e.column, fmt).k()
+fun trunc(date: KColumn, format: String) = functions.trunc(date.column, format).k()
+fun date_trunc(format: String, timestamp: KColumn) = functions.date_trunc(format, timestamp.column).k()
+fun from_utc_timestamp(ts: KColumn, tz: String) = functions.from_utc_timestamp(ts.column, tz).k()
+fun from_utc_timestamp(ts: KColumn, tz: KColumn) = functions.from_utc_timestamp(ts.column, tz.column).k()
+fun to_utc_timestamp(ts: KColumn, tz: String) = functions.to_utc_timestamp(ts.column, tz).k()
+fun to_utc_timestamp(ts: KColumn, tz: KColumn) = functions.to_utc_timestamp(ts.column, tz.column).k()
+fun window(timeColumn: KColumn, windowDuration: String, slideDuration: String, startTime: String) =
+    functions.window(timeColumn.column, windowDuration, slideDuration, startTime).k()
+fun window(timeColumn: KColumn, windowDuration: String, slideDuration: String) =
+    functions.window(timeColumn.column, windowDuration, slideDuration).k()
+fun window(timeColumn: KColumn, windowDuration: String) =
+    functions.window(timeColumn.column, windowDuration).k()
+fun array_contains(column: KColumn, value: Any) = functions.array_contains(column.column, value).k()
+fun arrays_overlap(a1: KColumn, a2: KColumn) = functions.arrays_overlap(a1.column, a2.column).k()
+fun slice(x: KColumn, start: Int, length: Int) = functions.slice(x.column, start, length).k()
+fun array_join(column: KColumn, delimiter: String, nullReplacement: String) = functions.array_join(column.column, delimiter, nullReplacement).k()
+fun array_join(column: KColumn, delimiter: String) = functions.array_join(column.column, delimiter).k()
+fun concat(vararg exprs: KColumn) = functions.concat(exprs.map { it.column }.toSeq()).k()
+fun array_position(column: KColumn, value: Any) = functions.array_position(column.column, value).k()
+fun element_at(column: KColumn, value: Any) = functions.element_at(column.column, value).k()
+fun array_sort(e: KColumn) = functions.array_sort(e.column).k()
+fun array_remove(column: KColumn, element: Any) = functions.array_remove(column.column, element).k()
+fun array_distinct(e: KColumn) = functions.array_distinct(e.column).k()
+fun array_intersect(col1: KColumn, col2: KColumn) = functions.array_intersect(col1.column, col2.column).k()
+fun array_union(col1: KColumn, col2: KColumn) = functions.array_union(col1.column, col2.column).k()
+fun array_except(col1: KColumn, col2: KColumn) = functions.array_except(col1.column, col2.column).k()
+fun explode(e: KColumn) = functions.explode(e.column).k()
+fun explode_outer(e: KColumn) = functions.explode_outer(e.column).k()
+fun posexplode(e: KColumn) = functions.posexplode(e.column).k()
+fun posexplode_outer(e: KColumn) = functions.posexplode_outer(e.column).k()
+fun get_json_object(e: KColumn, path: String) = functions.get_json_object(e.column, path).k()
+fun json_tuple(json: KColumn, vararg fields: String) = functions.json_tuple(json.column, fields.toSeq()).k()
+fun from_json(e: KColumn, schema: StructType, options: Map<String, String> = emptyMap()) = functions.from_json(e.column, schema, options).k()
+fun from_json(e: KColumn, schema: DataType, options: Map<String, String> = emptyMap()) = functions.from_json(e.column, schema, options).k()
+fun from_json(e: KColumn, schema: String, options: Map<String, String> = emptyMap()) = functions.from_json(e.column, schema, options).k()
+fun from_json(e: KColumn, schema: KColumn, options: Map<String, String> = emptyMap()) = functions.from_json(e.column, schema.column, options).k()
+fun schema_of_json(json: String) = functions.schema_of_json(json).k()
+fun schema_of_json(json: KColumn) = functions.schema_of_json(json.column).k()
+fun to_json(json: KColumn, options: Map<String, String> = emptyMap()) = functions.to_json(json.column, options).k()
+fun size(e: KColumn) = functions.size(e.column).k()
+fun sort_array(e: KColumn) = functions.sort_array(e.column).k()
+fun sort_array(e: KColumn, asc: Boolean) = functions.sort_array(e.column, asc).k()
+fun array_min(e: KColumn) = functions.array_min(e.column).k()
+fun array_max(e: KColumn) = functions.array_max(e.column).k()
+fun shuffle(e: KColumn) = functions.shuffle(e.column).k()
+fun reverse(e: KColumn) = functions.reverse(e.column).k()
+fun flatten(e: KColumn) = functions.flatten(e.column).k()
+fun sequence(start: KColumn, stop: KColumn, step: KColumn) = functions.sequence(start.column, stop.column, step.column).k()
+fun sequence(start: KColumn, stop: KColumn) = functions.sequence(start.column, stop.column).k()
+fun array_repeat(left: KColumn, right: KColumn) = functions.array_repeat(left.column, right.column).k()
+fun array_repeat(e: KColumn, count: Int) = functions.array_repeat(e.column, count).k()
+fun map_keys(e: KColumn) = functions.map_keys(e.column).k()
+fun map_values(e: KColumn) = functions.map_values(e.column).k()
+fun map_from_entries(e: KColumn) = functions.map_from_entries(e.column).k()
+fun arrays_zip(vararg e: KColumn) = functions.arrays_zip(e.map { it.column }.toSeq()).k()
+fun map_concat(vararg cols: KColumn) = functions.arrays_zip(cols.map { it.column }.toSeq()).k()
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Scala UDF functions
+//////////////////////////////////////////////////////////////////////////////////////////////
+inline fun <reified RT> udf(noinline udf: () -> RT) = UDFRegistry.udf(udf, RT::class.java)
+inline fun <reified RT, T1> udf(noinline udf: (T1) -> RT) = UDFRegistry.udf(udf, RT::class.java)
+inline fun <reified RT, T1, T2> udf(noinline udf: (T1, T2) -> RT) = UDFRegistry.udf(udf, RT::class.java)
+inline fun <reified RT, T1, T2, T3> udf(noinline udf: (T1, T2, T3) -> RT) = UDFRegistry.udf(udf, RT::class.java)
+inline fun <reified RT, T1, T2, T3, T4> udf(noinline udf: (T1, T2, T3, T4) -> RT) = UDFRegistry.udf(udf, RT::class.java)
+inline fun <reified RT, T1, T2, T3, T4, T5> udf(noinline udf: (T1, T2, T3, T4, T5) -> RT) = UDFRegistry.udf(udf, RT::class.java)
+inline fun <reified RT, T1, T2, T3, T4, T5, T6> udf(noinline udf: (T1, T2, T3, T4, T5, T6) -> RT) = UDFRegistry.udf(udf, RT::class.java)
+inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7> udf(noinline udf: (T1, T2, T3, T4, T5, T6, T7) -> RT) = UDFRegistry.udf(udf, RT::class.java)
+inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8> udf(noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8) -> RT) = UDFRegistry.udf(udf, RT::class.java)
+inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9> udf(noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9) -> RT) = UDFRegistry.udf(udf, RT::class.java)
+inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> udf(noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> RT) = UDFRegistry.udf(udf, RT::class.java)
+fun callUDF(udfName: String, vararg cols: KColumn) = functions.callUDF(udfName, cols.map { it.column }.toSeq()).k()
