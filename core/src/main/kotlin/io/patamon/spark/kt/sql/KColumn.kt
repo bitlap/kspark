@@ -9,7 +9,7 @@ import scala.Symbol
 /**
  * Desc: Column wrapper functions, and return Scala Spark [Column]
  */
-class KColumn(val column: Column) {
+open class KColumn(val column: Column) {
 
     operator fun unaryMinus() = column.`unary_$minus`().k()
     operator fun not() = column.`unary_$bang`().k()

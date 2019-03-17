@@ -17,7 +17,7 @@ spark.register("func", ::hello)
 // Persion: data class Person(val id: Long, val name: String, val age: Int) : Serializable
 spark.createDataFrame(
     Person(1L, "mimosa", 22),
-    Person(2L, "mimosa", 23)
+    Person(2L, "poppy", 23)
 ).createOrReplaceTempView("test")
 
 // query

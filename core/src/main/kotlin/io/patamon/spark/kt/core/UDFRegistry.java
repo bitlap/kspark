@@ -1,5 +1,6 @@
 package io.patamon.spark.kt.core;
 
+import io.patamon.spark.kt.sql.KUserDefinedFunction;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.api.java.*;
 import org.apache.spark.sql.catalyst.JavaTypeInference;
@@ -28,81 +29,81 @@ public class UDFRegistry implements Serializable {
         this.spark.udf().register(name, udf);
     }
 
-    public static <R> UserDefinedFunction udf(UDF0<R> f0, Class<R> returnType) {
-        return functions.udf(f0, toDataType(returnType));
+    public static <R> KUserDefinedFunction udf(UDF0<R> f0, Class<R> returnType) {
+        return new KUserDefinedFunction(functions.udf(f0, toDataType(returnType)));
     }
     public <R> void register(String name, UDF0<R> f0, Class<R> returnType) {
-        this.spark.udf().register(name, udf(f0, returnType));
+        this.spark.udf().register(name, udf(f0, returnType).get_udf());
     }
 
-    public static <R, T1> UserDefinedFunction udf(UDF1<T1, R> f1, Class<R> returnType) {
-        return functions.udf(f1, toDataType(returnType));
+    public static <R, T1> KUserDefinedFunction udf(UDF1<T1, R> f1, Class<R> returnType) {
+        return new KUserDefinedFunction(functions.udf(f1, toDataType(returnType)));
     }
     public <R, T1> void register(String name, UDF1<T1, R> f1, Class<R> returnType) {
-        this.spark.udf().register(name, udf(f1, returnType));
+        this.spark.udf().register(name, udf(f1, returnType).get_udf());
     }
 
-    public static <R, T1, T2> UserDefinedFunction udf(UDF2<T1, T2, R> f2, Class<R> returnType) {
-        return functions.udf(f2, toDataType(returnType));
+    public static <R, T1, T2> KUserDefinedFunction udf(UDF2<T1, T2, R> f2, Class<R> returnType) {
+        return new KUserDefinedFunction(functions.udf(f2, toDataType(returnType)));
     }
     public <R, T1, T2> void register(String name, UDF2<T1, T2, R> f2, Class<R> returnType) {
-        this.spark.udf().register(name, udf(f2, returnType));
+        this.spark.udf().register(name, udf(f2, returnType).get_udf());
     }
 
-    public static  <R, T1, T2, T3> UserDefinedFunction udf(UDF3<T1, T2, T3, R> f3, Class<R> returnType) {
-        return functions.udf(f3, toDataType(returnType));
+    public static  <R, T1, T2, T3> KUserDefinedFunction udf(UDF3<T1, T2, T3, R> f3, Class<R> returnType) {
+        return new KUserDefinedFunction(functions.udf(f3, toDataType(returnType)));
     }
     public <R, T1, T2, T3> void register(String name, UDF3<T1, T2, T3, R> f3, Class<R> returnType) {
-        this.spark.udf().register(name, udf(f3, returnType));
+        this.spark.udf().register(name, udf(f3, returnType).get_udf());
     }
 
-    public static <R, T1, T2, T3, T4> UserDefinedFunction udf(UDF4<T1, T2, T3, T4, R> f4, Class<R> returnType) {
-        return functions.udf(f4, toDataType(returnType));
+    public static <R, T1, T2, T3, T4> KUserDefinedFunction udf(UDF4<T1, T2, T3, T4, R> f4, Class<R> returnType) {
+        return new KUserDefinedFunction(functions.udf(f4, toDataType(returnType)));
     }
     public <R, T1, T2, T3, T4> void register(String name, UDF4<T1, T2, T3, T4, R> f4, Class<R> returnType) {
-        this.spark.udf().register(name, udf(f4, returnType));
+        this.spark.udf().register(name, udf(f4, returnType).get_udf());
     }
 
-    public static <R, T1, T2, T3, T4, T5> UserDefinedFunction udf(UDF5<T1, T2, T3, T4, T5, R> f5, Class<R> returnType) {
-        return functions.udf(f5, toDataType(returnType));
+    public static <R, T1, T2, T3, T4, T5> KUserDefinedFunction udf(UDF5<T1, T2, T3, T4, T5, R> f5, Class<R> returnType) {
+        return new KUserDefinedFunction(functions.udf(f5, toDataType(returnType)));
     }
     public <R, T1, T2, T3, T4, T5> void register(String name, UDF5<T1, T2, T3, T4, T5, R> f5, Class<R> returnType) {
-        this.spark.udf().register(name, udf(f5, returnType));
+        this.spark.udf().register(name, udf(f5, returnType).get_udf());
     }
 
-    public static <R, T1, T2, T3, T4, T5, T6> UserDefinedFunction udf(UDF6<T1, T2, T3, T4, T5, T6, R> f6, Class<R> returnType) {
-        return functions.udf(f6, toDataType(returnType));
+    public static <R, T1, T2, T3, T4, T5, T6> KUserDefinedFunction udf(UDF6<T1, T2, T3, T4, T5, T6, R> f6, Class<R> returnType) {
+        return new KUserDefinedFunction(functions.udf(f6, toDataType(returnType)));
     }
     public <R, T1, T2, T3, T4, T5, T6> void register(String name, UDF6<T1, T2, T3, T4, T5, T6, R> f6, Class<R> returnType) {
-        this.spark.udf().register(name, udf(f6, returnType));
+        this.spark.udf().register(name, udf(f6, returnType).get_udf());
     }
 
-    public static <R, T1, T2, T3, T4, T5, T6, T7> UserDefinedFunction udf(UDF7<T1, T2, T3, T4, T5, T6, T7, R> f7, Class<R> returnType) {
-        return functions.udf(f7, toDataType(returnType));
+    public static <R, T1, T2, T3, T4, T5, T6, T7> KUserDefinedFunction udf(UDF7<T1, T2, T3, T4, T5, T6, T7, R> f7, Class<R> returnType) {
+        return new KUserDefinedFunction(functions.udf(f7, toDataType(returnType)));
     }
     public <R, T1, T2, T3, T4, T5, T6, T7> void register(String name, UDF7<T1, T2, T3, T4, T5, T6, T7, R> f7, Class<R> returnType) {
-        this.spark.udf().register(name, udf(f7, returnType));
+        this.spark.udf().register(name, udf(f7, returnType).get_udf());
     }
 
-    public static <R, T1, T2, T3, T4, T5, T6, T7, T8> UserDefinedFunction udf(UDF8<T1, T2, T3, T4, T5, T6, T7, T8, R> f8, Class<R> returnType) {
-        return functions.udf(f8, toDataType(returnType));
+    public static <R, T1, T2, T3, T4, T5, T6, T7, T8> KUserDefinedFunction udf(UDF8<T1, T2, T3, T4, T5, T6, T7, T8, R> f8, Class<R> returnType) {
+        return new KUserDefinedFunction(functions.udf(f8, toDataType(returnType)));
     }
     public <R, T1, T2, T3, T4, T5, T6, T7, T8> void register(String name, UDF8<T1, T2, T3, T4, T5, T6, T7, T8, R> f8, Class<R> returnType) {
-        this.spark.udf().register(name, udf(f8, returnType));
+        this.spark.udf().register(name, udf(f8, returnType).get_udf());
     }
 
-    public static <R, T1, T2, T3, T4, T5, T6, T7, T8, T9> UserDefinedFunction udf(UDF9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> f9, Class<R> returnType) {
-        return functions.udf(f9, toDataType(returnType));
+    public static <R, T1, T2, T3, T4, T5, T6, T7, T8, T9> KUserDefinedFunction udf(UDF9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> f9, Class<R> returnType) {
+        return new KUserDefinedFunction(functions.udf(f9, toDataType(returnType)));
     }
     public <R, T1, T2, T3, T4, T5, T6, T7, T8, T9> void register(String name, UDF9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R> f9, Class<R> returnType) {
-        this.spark.udf().register(name, udf(f9, returnType));
+        this.spark.udf().register(name, udf(f9, returnType).get_udf());
     }
 
-    public static <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> UserDefinedFunction udf(UDF10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> f10, Class<R> returnType) {
-        return functions.udf(f10, toDataType(returnType));
+    public static <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> KUserDefinedFunction udf(UDF10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> f10, Class<R> returnType) {
+        return new KUserDefinedFunction(functions.udf(f10, toDataType(returnType)));
     }
     public <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> void register(String name, UDF10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> f10, Class<R> returnType) {
-        this.spark.udf().register(name, udf(f10, returnType));
+        this.spark.udf().register(name, udf(f10, returnType).get_udf());
     }
 
     public <R, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> void register(String name, UDF11<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, R> f11, Class<R> returnType) {

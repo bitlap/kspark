@@ -13,7 +13,7 @@ import scala.Tuple2
 /**
  * Desc: typealias DataFrame
  */
-class DataFrame(val _ds: Dataset<Row>) {
+open class DataFrame(val _ds: Dataset<Row>) {
 
     // fields from dataset
     val sparkSession = _ds.sparkSession()
@@ -23,6 +23,7 @@ class DataFrame(val _ds: Dataset<Row>) {
 
     // functions from dataset
     override fun toString() = _ds.toString()
+    operator fun invoke(colName: String) = _ds.apply(colName).k()
     operator fun get(colName: String) = _ds.apply(colName).k()
     fun toDF() = _ds.toDF().df()
     fun toDF(vararg colNames: String) = _ds.toDF(*colNames).df()
@@ -69,9 +70,8 @@ class DataFrame(val _ds: Dataset<Row>) {
     fun `as`(alias: Symbol) = _ds.`as`(alias).df()
     fun alias(alias: String) = `as`(alias)
     fun alias(alias: Symbol) = `as`(alias)
-    fun select(sortCol: String, vararg sortCols: String) = _ds.select(sortCol, sortCols.toSeq()).df()
-    // TODO: Spark functions
-    fun select(vararg sortExprs: KColumn) = _ds.select(sortExprs.map { it.column }.toSeq()).df()
+    fun select(col: String, vararg cols: String) = _ds.select(col, cols.toSeq()).df()
+    fun select(vararg cols: KColumn) = _ds.select(cols.map { it.column }.toSeq()).df()
     fun selectExpr(vararg exprs: String) = _ds.selectExpr(exprs.toSeq()).df()
     fun filter(condition: KColumn) = _ds.filter(condition.column).df()
     fun filter(conditionExpr: String) = _ds.filter(conditionExpr).df()
