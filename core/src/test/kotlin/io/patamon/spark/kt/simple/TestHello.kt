@@ -34,6 +34,16 @@ object TestHello : TestSparkBase("Test Hello") {
     }
 
     @Test
+    fun test_regist_udf() {
+        // create udf
+        spark.register("udf") { s: String -> "hello udf $s" }
+        val df = spark.createDataFrame(simpleData)
+        // invoke udf
+        val row = df.selectExpr("udf(name) as udf_name").head()
+        assert(row.getString("udf_name") == "hello udf hello")
+    }
+
+    @Test
     fun test_sql() {
         spark.createDataFrame(simpleData).createOrReplaceTempView("test_tables")
         val df = spark.sql("""
