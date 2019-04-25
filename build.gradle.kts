@@ -35,5 +35,5 @@ allprojects {
 
 plugins {
     java
-    kotlin("jvm") version "1.3.21"
+    kotlin("jvm") version "1.3.30"
 }
