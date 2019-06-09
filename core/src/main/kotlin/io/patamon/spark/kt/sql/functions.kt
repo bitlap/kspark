@@ -1,12 +1,15 @@
 package io.patamon.spark.kt.sql
 
 import io.patamon.spark.kt.core.UDFRegistry
+import io.patamon.spark.kt.utils.Types
 import io.patamon.spark.kt.utils.toSeq
 import org.apache.spark.sql.Column
 import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.functions
 import org.apache.spark.sql.types.DataType
 import org.apache.spark.sql.types.StructType
+import kotlin.jvm.internal.CallableReference
+import kotlin.reflect.jvm.javaType
 
 object functions
 /**
@@ -364,15 +367,15 @@ fun map_concat(vararg cols: KColumn) = functions.arrays_zip(cols.map { it.column
 //////////////////////////////////////////////////////////////////////////////////////////////
 // Scala UDF functions
 //////////////////////////////////////////////////////////////////////////////////////////////
-inline fun <reified RT> udf(noinline udf: () -> RT) = UDFRegistry.udf(udf, RT::class.java)
-inline fun <reified RT, T1> udf(noinline udf: (T1) -> RT) = UDFRegistry.udf(udf, RT::class.java)
-inline fun <reified RT, T1, T2> udf(noinline udf: (T1, T2) -> RT) = UDFRegistry.udf(udf, RT::class.java)
-inline fun <reified RT, T1, T2, T3> udf(noinline udf: (T1, T2, T3) -> RT) = UDFRegistry.udf(udf, RT::class.java)
-inline fun <reified RT, T1, T2, T3, T4> udf(noinline udf: (T1, T2, T3, T4) -> RT) = UDFRegistry.udf(udf, RT::class.java)
-inline fun <reified RT, T1, T2, T3, T4, T5> udf(noinline udf: (T1, T2, T3, T4, T5) -> RT) = UDFRegistry.udf(udf, RT::class.java)
-inline fun <reified RT, T1, T2, T3, T4, T5, T6> udf(noinline udf: (T1, T2, T3, T4, T5, T6) -> RT) = UDFRegistry.udf(udf, RT::class.java)
-inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7> udf(noinline udf: (T1, T2, T3, T4, T5, T6, T7) -> RT) = UDFRegistry.udf(udf, RT::class.java)
-inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8> udf(noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8) -> RT) = UDFRegistry.udf(udf, RT::class.java)
-inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9> udf(noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9) -> RT) = UDFRegistry.udf(udf, RT::class.java)
-inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> udf(noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> RT) = UDFRegistry.udf(udf, RT::class.java)
+inline fun <reified RT> udf(noinline udf: () -> RT) = UDFRegistry.udf(udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
+inline fun <reified RT, T1> udf(noinline udf: (T1) -> RT) = UDFRegistry.udf(udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
+inline fun <reified RT, T1, T2> udf(noinline udf: (T1, T2) -> RT) = UDFRegistry.udf(udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
+inline fun <reified RT, T1, T2, T3> udf(noinline udf: (T1, T2, T3) -> RT) = UDFRegistry.udf(udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
+inline fun <reified RT, T1, T2, T3, T4> udf(noinline udf: (T1, T2, T3, T4) -> RT) = UDFRegistry.udf(udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
+inline fun <reified RT, T1, T2, T3, T4, T5> udf(noinline udf: (T1, T2, T3, T4, T5) -> RT) = UDFRegistry.udf(udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
+inline fun <reified RT, T1, T2, T3, T4, T5, T6> udf(noinline udf: (T1, T2, T3, T4, T5, T6) -> RT) = UDFRegistry.udf(udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
+inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7> udf(noinline udf: (T1, T2, T3, T4, T5, T6, T7) -> RT) = UDFRegistry.udf(udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
+inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8> udf(noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8) -> RT) = UDFRegistry.udf(udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
+inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9> udf(noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9) -> RT) = UDFRegistry.udf(udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
+inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> udf(noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> RT) = UDFRegistry.udf(udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
 fun callUDF(udfName: String, vararg cols: KColumn) = functions.callUDF(udfName, cols.map { it.column }.toSeq()).k()

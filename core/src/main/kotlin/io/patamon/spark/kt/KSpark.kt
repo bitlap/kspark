@@ -3,6 +3,7 @@ package io.patamon.spark.kt
 import io.patamon.spark.kt.core.KSparkContext
 import io.patamon.spark.kt.core.UDFRegistry
 import io.patamon.spark.kt.sql.DataFrame
+import io.patamon.spark.kt.utils.Types
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.mapred.InputFormat
 import org.apache.hadoop.mapred.JobConf
@@ -123,67 +124,67 @@ open class KSpark(val spark: SparkSession) : Serializable {
         this.udfRegistry.register(name, udf)
     }
     inline fun <reified RT> register(name: String, noinline udf: () -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1> register(name: String, noinline udf: (T1) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2> register(name: String, noinline udf: (T1, T2) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3> register(name: String, noinline udf: (T1, T2, T3) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4> register(name: String, noinline udf: (T1, T2, T3, T4) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5> register(name: String, noinline udf: (T1, T2, T3, T4, T5) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     inline fun <reified RT, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> register(name: String, noinline udf: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20) -> RT) {
-        this.udfRegistry.register(name, udf, RT::class.java)
+        this.udfRegistry.register(name, udf, Types.functionReturnTypeToDataType(udf, RT::class.java))
     }
     // UDAF Register
     fun register(name: String, udaf: UserDefinedAggregateFunction) {

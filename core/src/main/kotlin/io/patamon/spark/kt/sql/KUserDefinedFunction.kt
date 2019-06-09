@@ -18,7 +18,6 @@ open class KUserDefinedFunction(val _udf: UserDefinedFunction) {
     operator fun invoke(cols: List<KColumn>): KColumn =
         _udf.apply(cols.map { it.column }.toSeq()).k()
 
-
     fun dataType() = _udf.dataType()
     fun nullable() = _udf.nullable()
     fun deterministic() = _udf.deterministic()

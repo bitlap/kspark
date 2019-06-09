@@ -41,6 +41,9 @@ inline fun <reified T: Any> scala.Array<T>?.toList(): List<T> {
     return bb.asSequence().toList()
 }
 
+fun <K, V> ScalaMap<K, V>.asJava() = JavaConverters.mapAsJavaMap(this).toMutableMap()
+fun <K, V> Map<K, V>.asScala() = JavaConverters.mapAsScalaMap(this)
+
 /**
  * Row Enhance
  */
@@ -61,7 +64,7 @@ fun DataFrame.save(
     if (!this.isEmpty()) {
         this.write().format(format)
             .mode(mode)
-            .partitionBy(*partitionBy.toTypedArray())
+            .partitionBy(partitionBy.toTypedArray().toSeq())
             .options(options)
             .save(path)
     }

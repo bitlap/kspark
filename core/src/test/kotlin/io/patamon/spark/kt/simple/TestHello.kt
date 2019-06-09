@@ -3,6 +3,9 @@ package io.patamon.spark.kt.simple
 import io.patamon.spark.kt.base.Person
 import io.patamon.spark.kt.base.TestSparkBase
 import io.patamon.spark.kt.sql.udf
+import io.patamon.spark.kt.utils.ScalaMap
+import io.patamon.spark.kt.utils.asJava
+import io.patamon.spark.kt.utils.asScala
 import io.patamon.spark.kt.utils.getString
 import org.junit.jupiter.api.Test
 
@@ -54,5 +57,20 @@ object TestHello : TestSparkBase("Test Hello") {
         )
         assert(df.collect().size == 2)
         assert(df.head().getString("name_age") == "hello_22")
+    }
+
+    @Test
+    fun test_regist_udf2() {
+        // create udf
+        spark.register("udf", ::udfMap)
+        val df = spark.createDataFrame(simpleData)
+        // invoke udf
+        df.selectExpr("udf(map('a','1'))").show()
+    }
+
+    fun udfMap(map: ScalaMap<String, String>): ScalaMap<String, String> {
+        val m = map.asJava()
+        m.put("b", "2")
+        return m.asScala()
     }
 }
