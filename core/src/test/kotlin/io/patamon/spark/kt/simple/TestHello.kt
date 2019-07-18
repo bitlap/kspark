@@ -3,9 +3,6 @@ package io.patamon.spark.kt.simple
 import io.patamon.spark.kt.base.Person
 import io.patamon.spark.kt.base.TestSparkBase
 import io.patamon.spark.kt.sql.udf
-import io.patamon.spark.kt.utils.ScalaMap
-import io.patamon.spark.kt.utils.asJava
-import io.patamon.spark.kt.utils.asScala
 import io.patamon.spark.kt.utils.getString
 import org.junit.jupiter.api.Test
 
@@ -21,56 +18,73 @@ object TestHello : TestSparkBase("Test Hello") {
 
     @Test
     fun test_create_dataFrame() {
-        val df = spark.createDataFrame(simpleData)
-        assert(df.collect().size == 2)
-        assert(df.head().getString("name") == "hello")
+        withTable {
+            val df = spark.table("persons")
+            assert(df.collect().size >= 2)
+            assert(df.head().getString("name") == "p1")
+        }
     }
 
     @Test
     fun test_udf() {
-        // create udf
-        val udf = udf { s: String -> "hello udf $s" }
-        val df = spark.createDataFrame(simpleData)
-        // invoke udf
-        val row = df.select(udf(df("name")) `as` "udf_name").head()
-        assert(row.getString("udf_name") == "hello udf hello")
+        withTable {
+            val df = spark.table("persons")
+            // create udf
+            val udf = udf { s: String -> "hello udf $s" }
+            // invoke udf
+            val row = df.select(udf(df("name")) `as` "udf_name").head()
+            assert(row.getString("udf_name") == "hello udf p1")
+        }
     }
 
     @Test
     fun test_regist_udf() {
-        // create udf
-        spark.register("udf") { s: String -> "hello udf $s" }
-        val df = spark.createDataFrame(simpleData)
-        // invoke udf
-        val row = df.selectExpr("udf(name) as udf_name").head()
-        assert(row.getString("udf_name") == "hello udf hello")
+        withTable {
+            withUDF {
+                val df = spark.table("persons")
+                // invoke udf
+                val row = df.selectExpr(
+                    "hello(name) as hello_name",
+                    "hello_lambda(name) as hello_lambda_name"
+                ).head()
+                assert(row.getString("hello_name") == "hello p1")
+                assert(row.getString("hello_lambda_name") == "hello lambda p1")
+            }
+        }
     }
 
     @Test
     fun test_sql() {
-        spark.createDataFrame(simpleData).createOrReplaceTempView("test_tables")
-        val df = spark.sql("""
-            select
-              id, name, age, concat_ws("_", name, age) name_age
-            from test_tables
-        """.trimIndent()
-        )
-        assert(df.collect().size == 2)
-        assert(df.head().getString("name_age") == "hello_22")
+        withTable {
+            val df = spark.sql(
+                """
+                select
+                  id, name, age, concat_ws("_", name, age) name_age
+                from persons
+                """.trimIndent()
+            )
+            assert(df.collect().size >= 2)
+            assert(df.head().getString("name_age") == "p1_22")
+        }
     }
 
+    /**
+     * Support normal functions with complex types
+     *
+     * Not support lambda functions with complex return types like map and etc.
+     *
+     * @see io.patamon.spark.kt.utils.Types.functionReturnTypeToDataType
+     */
     @Test
-    fun test_regist_udf2() {
-        // create udf
-        spark.register("udf", ::udfMap)
-        val df = spark.createDataFrame(simpleData)
-        // invoke udf
-        df.selectExpr("udf(map('a','1'))").show()
-    }
-
-    fun udfMap(map: ScalaMap<String, String>): ScalaMap<String, String> {
-        val m = map.asJava()
-        m.put("b", "2")
-        return m.asScala()
+    fun test_regist_udf_map() {
+        withUDF {
+            val df = spark.sql(
+                """
+                select hello_map(map('a', '1')) map
+                """.trimIndent()
+            )
+            val row = df.first()
+            assert(row.getJavaMap<String, String>(0) == mapOf("a" to "1"))
+        }
     }
 }

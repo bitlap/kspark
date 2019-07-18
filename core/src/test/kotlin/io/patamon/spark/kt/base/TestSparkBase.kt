@@ -3,6 +3,7 @@ package io.patamon.spark.kt.base
 import io.patamon.spark.kt.spark
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.TestInstance
+import java.io.Serializable
 
 /**
  * Desc: Test spark session base
@@ -15,7 +16,7 @@ import org.junit.jupiter.api.TestInstance
 abstract class TestSparkBase(
     _appName: String,
     _uiEnable: Boolean = false
-) {
+) : Serializable {
 
     // test spark session
     protected val spark = spark {
@@ -48,5 +49,17 @@ abstract class TestSparkBase(
                 spark.sql("drop table if exists test.$table")
             }
         }
+    }
+
+    fun withTable(action: () -> Unit) {
+        spark.createDataFrame(TestData.persons).registerTempTable("persons")
+        action.invoke()
+    }
+
+    fun withUDF(action: () -> Unit) {
+        spark.register("hello", TestUDFs::hello)
+        spark.register("hello_lambda") { input: String -> "hello lambda $input" }
+        spark.register("hello_map", TestUDFs::helloMap)
+        action.invoke()
     }
 }

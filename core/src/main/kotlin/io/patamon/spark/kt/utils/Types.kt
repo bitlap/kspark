@@ -1,5 +1,6 @@
 package io.patamon.spark.kt.utils
 
+import io.patamon.spark.kt.log
 import io.patamon.spark.kt.sql.TypeReference
 import org.apache.spark.sql.catalyst.JavaTypeInference
 import org.apache.spark.sql.types.DataType
@@ -31,21 +32,22 @@ object Types {
     /**
      * Get DataType from kotlin function return type
      */
-    fun functionReturnTypeToDataType(func: Any, defaut: Class<*>): DataType {
+    fun functionReturnTypeToDataType(func: Any, default: Class<*>): DataType {
         // normal function
         if (func is KCallable<*>) {
             return toDataType(func.returnType.javaType)
         }
         // lambda function
         if (func is Function<*>) {
-            try {
+            return try {
                 // not support, see EmptyContainerForLocal
-                return toDataType(func.reflect()!!.returnType.javaType)
-            } catch (other: Error) {
+                toDataType(func.reflect()!!.returnType.javaType)
+            } catch (e: Error) {
                 // TODO: e is KotlinReflectionInternalError
                 //  now return default class, maybe not correct.
                 //  will fix in next kotlin-reflect version. Or handle with KType.
-                return JavaTypeInference.inferDataType(defaut)._1
+                log.error("Not support exception, because of [${e.message}].")
+                JavaTypeInference.inferDataType(default)._1
             }
         }
         throw IllegalArgumentException("func $func is not a valid function.")

@@ -16,6 +16,7 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.expressions.UserDefinedAggregateFunction
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.types.StructType
+import org.slf4j.LoggerFactory
 import java.io.Serializable
 import kotlin.reflect.KClass
 import org.apache.hadoop.mapreduce.InputFormat as NewInputFormat
@@ -25,6 +26,7 @@ import org.apache.hadoop.mapreduce.InputFormat as NewInputFormat
  */
 fun spark(context: KSparkContext.() -> Unit): KSpark = KSparkContext().apply(context).getOrCreate()
 fun Dataset<Row>.df(): DataFrame = DataFrame(this)
+val log = LoggerFactory.getLogger(KSpark::class.java)
 
 /**
  * Desc: spark wrapper
