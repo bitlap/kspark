@@ -1,8 +1,8 @@
 package io.patamon.spark.kt.simple
 
-import io.patamon.spark.kt.base.Person
 import io.patamon.spark.kt.base.TestSparkBase
 import io.patamon.spark.kt.sql.udf
+import io.patamon.spark.kt.utils.getMap
 import io.patamon.spark.kt.utils.getString
 import org.junit.jupiter.api.Test
 
@@ -10,11 +10,6 @@ import org.junit.jupiter.api.Test
  * Desc: Hello Spark Test
  */
 object TestHello : TestSparkBase("Test Hello") {
-
-    private val simpleData = listOf(
-        Person(1L, "hello", 22),
-        Person(2L, "world", 23)
-    )
 
     @Test
     fun test_create_dataFrame() {
@@ -85,6 +80,7 @@ object TestHello : TestSparkBase("Test Hello") {
             )
             val row = df.first()
             assert(row.getJavaMap<String, String>(0) == mapOf("a" to "1"))
+            assert(row.getMap<String, String>("map") == mapOf("a" to "1"))
         }
     }
 }

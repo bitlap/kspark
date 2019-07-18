@@ -41,8 +41,8 @@ inline fun <reified T: Any> scala.Array<T>?.toList(): List<T> {
     return bb.asSequence().toList()
 }
 
-fun <K, V> ScalaMap<K, V>.asJava() = JavaConverters.mapAsJavaMap(this).toMutableMap()
-fun <K, V> Map<K, V>.asScala() = JavaConverters.mapAsScalaMap(this)
+fun <K, V> ScalaMap<K, V>.asJava() = JavaConverters.mapAsJavaMapConverter(this).asJava().toMutableMap()
+fun <K, V> Map<K, V>.asScala(): ScalaMap<K, V> = JavaConverters.mapAsScalaMapConverter(this).asScala()
 
 /**
  * Row Enhance
@@ -50,6 +50,7 @@ fun <K, V> Map<K, V>.asScala() = JavaConverters.mapAsScalaMap(this)
 fun Row.getString(col: String) = this.getAs<String>(col)
 fun Row.getBoolean(col: String) = this.getAs<Boolean>(col)
 fun Row.getBytes(col: String) = this.getAs<Array<Byte>>(col)
+fun <K, V> Row.getMap(col: String) = this.getAs<ScalaMap<K, V>>(col).asJava()
 
 /**
  * Save functions
@@ -86,4 +87,13 @@ fun DataFrame.saveAsOrc(
     options: Map<String, String> = emptyMap()
 ) {
     this.save(path, "orc", mode, partitionBy, options)
+}
+
+fun DataFrame.saveAsCsv(
+    path: String,
+    mode: SaveMode = SaveMode.ErrorIfExists,
+    partitionBy: List<String> = emptyList(),
+    options: Map<String, String> = emptyMap()
+) {
+    this.save(path, "com.databricks.spark.csv", mode, partitionBy, options)
 }
