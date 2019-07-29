@@ -21,6 +21,7 @@ import kotlin.reflect.jvm.reflect
  * Date: 2019-06-09
  */
 typealias ScalaMap<K, V> = scala.collection.Map<K, V>
+typealias ScalaMap2<K, V> = scala.collection.mutable.Map<K, V>
 
 object Types {
 

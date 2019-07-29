@@ -1,14 +1,18 @@
 package io.patamon.spark.kt.sql
 
 import io.patamon.spark.kt.df
+import io.patamon.spark.kt.utils.asScala
+import io.patamon.spark.kt.utils.asScala2
 import io.patamon.spark.kt.utils.toSeq
+import org.apache.hadoop.conf.Configuration
+import org.apache.phoenix.spark.DataFrameFunctions
 import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.Encoder
 import org.apache.spark.sql.Row
+import org.apache.spark.sql.SaveMode
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.util.Utils
-import scala.Symbol
-import scala.Tuple2
+import scala.*
 
 /**
  * Desc: typealias DataFrame
@@ -148,4 +152,73 @@ open class DataFrame(val _ds: Dataset<Row>) {
     fun writeStream() = _ds.writeStream()
     fun toJSON() = _ds.toJSON()
     fun inputFiles() = _ds.inputFiles().toList()
+
+    /**
+     * Save functions
+     */
+    fun save(
+        path: String,
+        format: String = "parquet",
+        mode: SaveMode = SaveMode.ErrorIfExists,
+        partitionBy: List<String> = emptyList(),
+        options: Map<String, String> = emptyMap()
+    ) {
+        if (!this.isEmpty()) {
+            this.write().format(format)
+                .mode(mode)
+                .partitionBy(partitionBy.toTypedArray().toSeq())
+                .options(options)
+                .save(path)
+        }
+    }
+
+    fun saveAsParquet(
+        path: String,
+        mode: SaveMode = SaveMode.ErrorIfExists,
+        partitionBy: List<String> = emptyList(),
+        options: Map<String, String> = emptyMap()
+    ) {
+        this.save(path, "parquet", mode, partitionBy, options)
+    }
+
+    fun saveAsOrc(
+        path: String,
+        mode: SaveMode = SaveMode.ErrorIfExists,
+        partitionBy: List<String> = emptyList(),
+        options: Map<String, String> = emptyMap()
+    ) {
+        this.save(path, "orc", mode, partitionBy, options)
+    }
+
+    fun saveAsCsv(
+        path: String,
+        mode: SaveMode = SaveMode.ErrorIfExists,
+        partitionBy: List<String> = emptyList(),
+        options: Map<String, String> = emptyMap()
+    ) {
+        this.save(path, "com.databricks.spark.csv", mode, partitionBy, options)
+    }
+
+    fun saveAsJson(
+        path: String,
+        mode: SaveMode = SaveMode.ErrorIfExists,
+        partitionBy: List<String> = emptyList(),
+        options: Map<String, String> = emptyMap()
+    ) {
+        this.save(path, "json", mode, partitionBy, options)
+    }
+
+    fun saveAsPhoenix(tableName: String, zkUrl: String?) {
+        DataFrameFunctions(_ds).saveToPhoenix(tableName, Configuration(), Option.apply(zkUrl), Option.empty(), false)
+    }
+
+    fun saveAsPhoenix(params: Map<String, String>) {
+        DataFrameFunctions(_ds).saveToPhoenix(
+            params["table"],
+            Configuration(),
+            Option.apply(params["zkUrl"]),
+            Option.apply(params["TenantId"]),
+            params.containsKey("skipNormalizingIdentifier")
+        )
+    }
 }

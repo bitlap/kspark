@@ -3,7 +3,6 @@ package io.patamon.spark.kt.utils
 import io.patamon.spark.kt.KSpark
 import io.patamon.spark.kt.sql.DataFrame
 import org.apache.spark.sql.Row
-import org.apache.spark.sql.SaveMode
 import scala.collection.JavaConverters
 
 
@@ -43,6 +42,7 @@ inline fun <reified T: Any> scala.Array<T>?.toList(): List<T> {
 
 fun <K, V> ScalaMap<K, V>.asJava() = JavaConverters.mapAsJavaMapConverter(this).asJava().toMutableMap()
 fun <K, V> Map<K, V>.asScala(): ScalaMap<K, V> = JavaConverters.mapAsScalaMapConverter(this).asScala()
+fun <K, V> Map<K, V>.asScala2(): ScalaMap2<K, V> = JavaConverters.mapAsScalaMapConverter(this).asScala()
 
 /**
  * Row Enhance
@@ -51,49 +51,3 @@ fun Row.getString(col: String) = this.getAs<String>(col)
 fun Row.getBoolean(col: String) = this.getAs<Boolean>(col)
 fun Row.getBytes(col: String) = this.getAs<Array<Byte>>(col)
 fun <K, V> Row.getMap(col: String) = this.getAs<ScalaMap<K, V>>(col).asJava()
-
-/**
- * Save functions
- */
-fun DataFrame.save(
-    path: String,
-    format: String = "parquet",
-    mode: SaveMode = SaveMode.ErrorIfExists,
-    partitionBy: List<String> = emptyList(),
-    options: Map<String, String> = emptyMap()
-) {
-    if (!this.isEmpty()) {
-        this.write().format(format)
-            .mode(mode)
-            .partitionBy(partitionBy.toTypedArray().toSeq())
-            .options(options)
-            .save(path)
-    }
-}
-
-fun DataFrame.saveAsParquet(
-    path: String,
-    mode: SaveMode = SaveMode.ErrorIfExists,
-    partitionBy: List<String> = emptyList(),
-    options: Map<String, String> = emptyMap()
-) {
-    this.save(path, "parquet", mode, partitionBy, options)
-}
-
-fun DataFrame.saveAsOrc(
-    path: String,
-    mode: SaveMode = SaveMode.ErrorIfExists,
-    partitionBy: List<String> = emptyList(),
-    options: Map<String, String> = emptyMap()
-) {
-    this.save(path, "orc", mode, partitionBy, options)
-}
-
-fun DataFrame.saveAsCsv(
-    path: String,
-    mode: SaveMode = SaveMode.ErrorIfExists,
-    partitionBy: List<String> = emptyList(),
-    options: Map<String, String> = emptyMap()
-) {
-    this.save(path, "com.databricks.spark.csv", mode, partitionBy, options)
-}
