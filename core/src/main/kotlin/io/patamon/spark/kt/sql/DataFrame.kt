@@ -1,8 +1,6 @@
 package io.patamon.spark.kt.sql
 
 import io.patamon.spark.kt.df
-import io.patamon.spark.kt.utils.asScala
-import io.patamon.spark.kt.utils.asScala2
 import io.patamon.spark.kt.utils.toSeq
 import org.apache.hadoop.conf.Configuration
 import org.apache.phoenix.spark.DataFrameFunctions
