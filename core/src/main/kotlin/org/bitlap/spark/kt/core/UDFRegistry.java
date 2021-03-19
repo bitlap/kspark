@@ -1,12 +1,13 @@
-package io.patamon.spark.kt.core;
+package org.bitlap.spark.kt.core;
 
-import io.patamon.spark.kt.sql.KUserDefinedFunction;
+import org.bitlap.spark.kt.sql.KUserDefinedFunction;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.api.java.*;
 import org.apache.spark.sql.expressions.UserDefinedAggregateFunction;
 import org.apache.spark.sql.expressions.UserDefinedFunction;
 import org.apache.spark.sql.functions;
 import org.apache.spark.sql.types.DataType;
+import org.bitlap.spark.kt.sql.KUserDefinedFunction;
 
 import java.io.Serializable;
 
@@ -15,7 +16,7 @@ import java.io.Serializable;
  */
 public class UDFRegistry implements Serializable {
 
-    private SparkSession spark;
+    private final SparkSession spark;
 
     public UDFRegistry(SparkSession spark) {
         this.spark = spark;

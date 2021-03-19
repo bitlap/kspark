@@ -3,11 +3,11 @@ val sparkVersion: String by project
 val phoenixVersion: String by project
 
 dependencies {
-    compile("org.jetbrains.kotlin", "kotlin-reflect", "1.3.41")
-    compile("org.apache.spark", "spark-core_$scalaVersion", sparkVersion)
-    compile("org.apache.spark", "spark-sql_$scalaVersion", sparkVersion)
-    compile("org.apache.spark", "spark-hive_$scalaVersion", sparkVersion)
-    compile("com.databricks", "spark-csv_$scalaVersion", "1.5.0")
-    compile("org.apache.phoenix", "phoenix-spark", phoenixVersion)
+    implementation("org.jetbrains.kotlin", "kotlin-reflect", "1.4.31")
+    implementation("org.apache.spark", "spark-core_$scalaVersion", sparkVersion)
+    implementation("org.apache.spark", "spark-sql_$scalaVersion", sparkVersion)
+    implementation("org.apache.spark", "spark-hive_$scalaVersion", sparkVersion)
+    implementation("com.databricks", "spark-csv_$scalaVersion", "1.5.0")
+    implementation("org.apache.phoenix", "phoenix-spark", phoenixVersion)
 
 }

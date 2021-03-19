@@ -1,6 +1,6 @@
-package io.patamon.spark.kt.sql
+package org.bitlap.spark.kt.sql
 
-import io.patamon.spark.kt.utils.toSeq
+import org.bitlap.spark.kt.utils.toSeq
 import org.apache.spark.sql.Column
 import org.apache.spark.sql.types.DataType
 import org.apache.spark.sql.types.Metadata

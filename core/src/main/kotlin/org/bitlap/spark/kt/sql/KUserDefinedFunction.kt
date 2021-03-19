@@ -1,6 +1,5 @@
-package io.patamon.spark.kt.sql
+package org.bitlap.spark.kt.sql
 
-import io.patamon.spark.kt.utils.toSeq
 import org.apache.spark.sql.expressions.UserDefinedFunction
 
 /**
@@ -13,10 +12,10 @@ import org.apache.spark.sql.expressions.UserDefinedFunction
 open class KUserDefinedFunction(val _udf: UserDefinedFunction) {
 
     operator fun invoke(vararg cols: KColumn): KColumn =
-        _udf.apply(cols.map { it.column }.toSeq()).k()
+        _udf.apply(*cols.map { it.column }.toTypedArray()).k()
 
     operator fun invoke(cols: List<KColumn>): KColumn =
-        _udf.apply(cols.map { it.column }.toSeq()).k()
+        _udf.apply(*cols.map { it.column }.toTypedArray()).k()
 
     fun dataType() = _udf.dataType()
     fun nullable() = _udf.nullable()

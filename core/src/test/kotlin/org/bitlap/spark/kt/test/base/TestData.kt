@@ -1,4 +1,4 @@
-package io.patamon.spark.kt.base
+package org.bitlap.spark.kt.test.base
 
 /**
  * Desc: 测试数据

@@ -1,9 +1,9 @@
-package io.patamon.spark.kt
+package org.bitlap.spark.kt
 
-import io.patamon.spark.kt.core.KSparkContext
-import io.patamon.spark.kt.core.UDFRegistry
-import io.patamon.spark.kt.sql.DataFrame
-import io.patamon.spark.kt.utils.Types
+import org.bitlap.spark.kt.core.KSparkContext
+import org.bitlap.spark.kt.core.UDFRegistry
+import org.bitlap.spark.kt.sql.DataFrame
+import org.bitlap.spark.kt.utils.Types
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.mapred.InputFormat
 import org.apache.hadoop.mapred.JobConf

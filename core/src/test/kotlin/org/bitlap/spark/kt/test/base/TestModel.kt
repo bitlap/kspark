@@ -1,4 +1,4 @@
-package io.patamon.spark.kt.base
+package org.bitlap.spark.kt.test.base
 
 import java.io.Serializable
 

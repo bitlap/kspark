@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 allprojects {
-    group = "io.patamon.kspark"
+    group = "org.bitlap.kspark"
     version = "1.0-SNAPSHOT"
 
     apply {
@@ -35,5 +35,6 @@ allprojects {
 
 plugins {
     java
-    kotlin("jvm") version "1.3.41"
+    kotlin("jvm") version "1.4.31"
+    `maven-publish`
 }

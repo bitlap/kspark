@@ -1,9 +1,9 @@
-package io.patamon.spark.kt.simple
+package org.bitlap.spark.kt.test.simple
 
-import io.patamon.spark.kt.base.TestSparkBase
-import io.patamon.spark.kt.sql.udf
-import io.patamon.spark.kt.utils.getMap
-import io.patamon.spark.kt.utils.getString
+import org.bitlap.spark.kt.test.base.TestSparkBase
+import org.bitlap.spark.kt.sql.udf
+import org.bitlap.spark.kt.utils.getMap
+import org.bitlap.spark.kt.utils.getString
 import org.junit.jupiter.api.Test
 
 /**
@@ -68,7 +68,7 @@ object TestHello : TestSparkBase("Test Hello") {
      *
      * Not support lambda functions with complex return types like map and etc.
      *
-     * @see io.patamon.spark.kt.utils.Types.functionReturnTypeToDataType
+     * @see org.bitlap.spark.kt.utils.Types.functionReturnTypeToDataType
      */
     @Test
     fun test_regist_udf_map() {

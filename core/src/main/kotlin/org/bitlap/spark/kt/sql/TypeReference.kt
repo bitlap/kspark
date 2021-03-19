@@ -1,4 +1,4 @@
-package io.patamon.spark.kt.sql
+package org.bitlap.spark.kt.sql
 
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type

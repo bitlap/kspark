@@ -1,6 +1,6 @@
-package io.patamon.spark.kt.base
+package org.bitlap.spark.kt.test.base
 
-import io.patamon.spark.kt.spark
+import org.bitlap.spark.kt.spark
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.TestInstance
 import java.io.Serializable

@@ -1,6 +1,6 @@
-package io.patamon.spark.kt.core
+package org.bitlap.spark.kt.core
 
-import io.patamon.spark.kt.KSpark
+import org.bitlap.spark.kt.KSpark
 import org.apache.spark.sql.SparkSession
 import javax.servlet.Filter
 

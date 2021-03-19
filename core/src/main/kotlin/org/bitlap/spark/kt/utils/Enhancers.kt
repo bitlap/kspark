@@ -1,7 +1,7 @@
-package io.patamon.spark.kt.utils
+package org.bitlap.spark.kt.utils
 
-import io.patamon.spark.kt.KSpark
-import io.patamon.spark.kt.sql.DataFrame
+import org.bitlap.spark.kt.KSpark
+import org.bitlap.spark.kt.sql.DataFrame
 import org.apache.spark.sql.Row
 import scala.collection.JavaConverters
 

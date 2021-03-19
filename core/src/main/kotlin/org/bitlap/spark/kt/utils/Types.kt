@@ -1,7 +1,7 @@
-package io.patamon.spark.kt.utils
+package org.bitlap.spark.kt.utils
 
-import io.patamon.spark.kt.log
-import io.patamon.spark.kt.sql.TypeReference
+import org.bitlap.spark.kt.log
+import org.bitlap.spark.kt.sql.TypeReference
 import org.apache.spark.sql.catalyst.JavaTypeInference
 import org.apache.spark.sql.types.DataType
 import org.apache.spark.sql.types.DataTypes

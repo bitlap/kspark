@@ -1,7 +1,7 @@
-package io.patamon.spark.kt.base
+package org.bitlap.spark.kt.test.base
 
-import io.patamon.spark.kt.utils.ScalaMap
-import io.patamon.spark.kt.utils.asJava
+import org.bitlap.spark.kt.utils.ScalaMap
+import org.bitlap.spark.kt.utils.asJava
 import java.io.Serializable
 
 /**
